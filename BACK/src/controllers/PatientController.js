@@ -23,7 +23,8 @@ module.exports = {
     },
     async getAll(req, res){
         try {
-            const patients = await Patient.find().populate("adresses");
+            const {page = 1, limit = 10} = req.query;
+            const patients = await Patient.paginate({}, {page, limit}).populate("adresses");
             return res.json(patients); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading all patients: '+err});

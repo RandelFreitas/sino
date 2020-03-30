@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const Address = mongoose.model('Address');
 
@@ -39,5 +40,7 @@ const PatientSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
+PatientSchema.plugin(mongoosePaginate);
 
 mongoose.model("Patient", PatientSchema);
