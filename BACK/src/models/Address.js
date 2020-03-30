@@ -29,6 +29,9 @@ const AddressSchema = new mongoose.Schema({
     obs: {
         type: String
     },
+    parentId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
     createdAt: {
         type: Date,
         default: Date.now,
