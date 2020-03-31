@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const { tenantModel } = require("../lib/MultiTenant");
+
 const AddressSchema = new mongoose.Schema({
     state: {
         type: String,
@@ -38,4 +40,4 @@ const AddressSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model("Address", AddressSchema);
+module.exports = tenantModel("Address", AddressSchema);

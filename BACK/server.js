@@ -1,12 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const requireDir = require("require-dir");
-const bodyParser = require("body-parser");
 
 const app = express();
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded())
+
+const { bindCurrentNamespace } = require("./src/lib/Storage");
+app.use(bindCurrentNamespace);
 
 mongoose.connect("mongodb://localhost:27017/sino");
 

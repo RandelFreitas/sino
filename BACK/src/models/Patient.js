@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate");
 
-const Address = mongoose.model('Address');
+const { tenantModel } = require("../lib/MultiTenant");
+
+const Address = require('../models/Address');
 
 const PatientSchema = new mongoose.Schema({
     name: {
@@ -43,4 +45,4 @@ const PatientSchema = new mongoose.Schema({
 
 PatientSchema.plugin(mongoosePaginate);
 
-mongoose.model("Patient", PatientSchema);
+module.exports = tenantModel("Patient", PatientSchema);
