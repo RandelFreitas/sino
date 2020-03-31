@@ -11,7 +11,7 @@ module.exports = {
 
             setCurrentTenantId(manager._id);
             
-            if(await User().findOne({email})){
+            if(await User({skipTenant: true}).findOne({email})){
                 return res.status(400).send({error: 'User already exists: '+email})
             }
 

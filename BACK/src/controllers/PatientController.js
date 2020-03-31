@@ -42,7 +42,7 @@ module.exports = {
     },
     async deleteById(req, res){
         try {
-            await Address().remove({parentId: req.params.patientId});
+            await Address().deleteMany({parentId: req.params.patientId});
             await Patient().findByIdAndRemove(req.params.patientId);
             return res.send(); 
         } catch (err) {
@@ -58,7 +58,7 @@ module.exports = {
             }, {new: true});
 
             patient.adresses = [];
-            await Address().remove({parentId: patient._id});
+            await Address().deleteMany({parentId: patient._id});
 
             await Promise.all(adresses.map(async address => {
                 const patientAddress = new Address({...address, parentId: patient._id});
