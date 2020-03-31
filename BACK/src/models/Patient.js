@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+const mongoose = require("../database/Connect");
 const mongoosePaginate = require("mongoose-paginate");
 
-const { tenantModel } = require("../lib/MultiTenant");
+const { tenantModel } = require("../middleware/MultiTenant");
 
 const Address = require('../models/Address');
 

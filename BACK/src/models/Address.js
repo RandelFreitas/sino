@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require("../database/Connect");
 
-const { tenantModel } = require("../lib/MultiTenant");
+const { tenantModel } = require("../middleware/MultiTenant");
 
 const AddressSchema = new mongoose.Schema({
     state: {

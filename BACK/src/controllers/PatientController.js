@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("../database/Connect");
 const Patient = require('../models/Patient');
 const Address = require('../models/Address');
 
@@ -6,7 +6,6 @@ module.exports = {
     async create(req, res){
         try{
             const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, adresses} = req.body;
-            console.log({Patient});
             const patient = await Patient().create({name, email, cpf, phone1, phone2, dtBirth, sex, obs});
 
             await Promise.all(adresses.map(async address => {

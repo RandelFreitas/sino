@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("../database/Connect");
 
 const { getCurrentTenantId } = require("./Storage");
 

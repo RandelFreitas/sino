@@ -1,20 +1,18 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const requireDir = require("require-dir");
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
-const { bindCurrentNamespace } = require("./src/lib/Storage");
+const { bindCurrentNamespace } = require("./src/middleware/Storage");
 app.use(bindCurrentNamespace);
-
-mongoose.connect("mongodb://localhost:27017/sino");
 
 requireDir("./src/models");
 
 //Rotas
-app.use("/api", require("./src/routes/CommonsRouter"))
+app.use("/api", require("./src/routes/ManagerRouter"))
 app.use("/api", require("./src/routes/PatientRouter"));
-app.use("/api", require("./src/routes/AuthRouter"));
+require("./src/routes/AuthRouter")(app);
 
 app.listen(3001);

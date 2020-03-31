@@ -1,6 +1,9 @@
 const express = require("express");
 const routes = express.Router();
 const PatientController = require("../controllers/PatientController") 
+const authMiddleware = require("../middleware/Auth");
+
+routes.use(authMiddleware);
 
 //create patient
 routes.post("/patients", PatientController.create);
