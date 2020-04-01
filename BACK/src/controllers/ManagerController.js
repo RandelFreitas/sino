@@ -21,7 +21,7 @@ module.exports = {
 
             const managerAddress = Address()({...address, parentId: manager._id});
             await managerAddress.save();
-            manager.address = managerAddress._id;
+            manager.address = managerAddress;
             await manager.save();
             
             if(await User({skipTenant: true}).findOne({email})){
@@ -47,7 +47,7 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const manager = await Manager().findById(req.params.managerId);
+            const manager = await Manager().findById(req.params.managerId).populate("address");
             return res.json(manager); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading manager by id: '+err});

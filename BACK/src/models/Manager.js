@@ -1,4 +1,5 @@
 const mongoose = require("../database/Connect");
+const mongoosePaginate = require("mongoose-paginate");
 const { tenantlessModel } = require("../middleware/MultiTenant");
 const Address = require('../models/Address');
 
@@ -25,5 +26,6 @@ const ManagerSchema = new mongoose.Schema({
   },
 });
 
+ManagerSchema.plugin(mongoosePaginate);
 const Manager = tenantlessModel("Manager", ManagerSchema);
 module.exports = Manager;
