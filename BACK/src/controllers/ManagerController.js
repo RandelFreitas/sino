@@ -1,15 +1,28 @@
 const mongoose = require("../database/Connect");
 const Manager = require('../models/Manager');
 const User = require('../models/User');
+const Address = require('../models/Address');
+const validator = require('cpf-cnpj-validator');
 const { setCurrentTenantId } = require("../middleware/Storage");
+
 
 module.exports = {
     async create(req, res){
         try{
-            const {name, email, password} = req.body; 
-            const manager = await Manager().create({name, email});
+            const {name, email, cpf, telefone, address, password} = req.body; 
+            
+            if(!validator.cpf.isValid(cpf)){
+                return res.status(400).send({error: 'CPF invalid: '+cpf})
+            }
 
+            const manager = await Manager().create({name, email, cpf, telefone});
+            
             setCurrentTenantId(manager._id);
+
+            const managerAddress = Address()({...address, parentId: manager._id});
+            await managerAddress.save();
+            manager.address = managerAddress._id;
+            await manager.save();
             
             if(await User({skipTenant: true}).findOne({email})){
                 return res.status(400).send({error: 'User already exists: '+email})
