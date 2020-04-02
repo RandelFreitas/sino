@@ -1,13 +1,12 @@
 const express = require("express");
 const routes = express.Router();
-const mongoose = require('mongoose');
 const ClinicController = require('../controllers/ClinicController');
-const authMiddleware = require("../middleware/Auth");
-
-routes.use(authMiddleware);
 
 //create clinic
 routes.post("/clinics", ClinicController.create);
+
+//authenticate clinic
+routes.post("/clinics/authenticate", ClinicController.authenticate);
 
 //upadate clinic by id
 routes.put("/clinics/:clinicId", ClinicController.updateById);

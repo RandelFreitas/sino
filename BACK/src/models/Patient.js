@@ -1,7 +1,7 @@
 const mongoose = require("../database/Connect");
 const mongoosePaginate = require("mongoose-paginate");
 
-const { tenantModel } = require("../middleware/MultiTenant");
+const { subTenantModel } = require("../middleware/MultiTenant");
 
 const Address = require('../models/Address');
 
@@ -35,10 +35,10 @@ const PatientSchema = new mongoose.Schema({
     obs: {
         type: String,
     },
-    adresses: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Address',
-    }],
+    address: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Address,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -47,4 +47,4 @@ const PatientSchema = new mongoose.Schema({
 
 PatientSchema.plugin(mongoosePaginate);
 
-module.exports = tenantModel("Patient", PatientSchema);
+module.exports = subTenantModel("Patient", PatientSchema);

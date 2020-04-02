@@ -6,7 +6,7 @@ const validator = require('cpf-cnpj-validator');
 module.exports = {
     async create(req, res){
         try{
-            const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, adresses} = req.body;
+            const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, address} = req.body;
             
             if(!validator.cpf.isValid(cpf)){
                 return res.status(400).send({error: 'CPF invalid: '+cpf})
@@ -14,12 +14,9 @@ module.exports = {
 
             const patient = await Patient().create({name, email, cpf, phone1, phone2, dtBirth, sex, obs});
 
-            await Promise.all(adresses.map(async address => {
-                const patientAddress = Address()({...address, parentId: patient._id});
-                await patientAddress.save();
-                patient.adresses.push(patientAddress);
-            }));
-
+            const patientAddress = Address()({...address, parentId: patient._id});
+            await patientAddress.save();
+            patient.address = patientAddress;
             await patient.save();
 
             return res.json(patient);
@@ -39,7 +36,7 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const patient = await Patient().findById(req.params.patientId).populate("adresses");
+            const patient = await Patient({skipTenant: true}).findById(req.params.patientId);
             return res.json(patient); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading patient by id: '+err});
@@ -48,7 +45,7 @@ module.exports = {
     },
     async deleteById(req, res){
         try {
-            await Address().deleteMany({parentId: req.params.patientId});
+            await Address().deleteOne({parentId: req.params.patientId});
             await Patient().findByIdAndRemove(req.params.patientId);
             return res.send(); 
         } catch (err) {
@@ -58,7 +55,7 @@ module.exports = {
     },
     async updateById(req, res){
         try{
-            const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, adresses} = req.body;
+            const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, address} = req.body;
 
             if(!validator.cpf.isValid(cpf)){
                 return res.status(400).send({error: 'CPF invalid: '+cpf})
@@ -69,17 +66,14 @@ module.exports = {
             }, {new: true});
 
             patient.adresses = [];
-            await Address().deleteMany({parentId: patient._id});
+            await Address().deleteOne({parentId: patient._id});
 
-            await Promise.all(adresses.map(async address => {
-                const patientAddress = new Address({...address, parentId: patient._id});
-                await patientAddress.save();
-                patient.adresses.push(patientAddress);
-            }));
-
+            const patientAddress = Address()({...address, parentId: patient._id});
+            await patientAddress.save();
+            patient.address = patientAddress;
             await patient.save();
 
-            return res.json(patient.populate("adresses"));
+            return res.json(patient);
         } catch (err) {
             return res.status(400).send({error: 'Error updating patient: '+err});
         }

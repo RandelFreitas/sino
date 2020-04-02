@@ -2,6 +2,10 @@ const mongoose = require("../database/Connect");
 const Clinic = require('../models/Clinic');
 const Address = require('../models/Address');
 const validator = require('cpf-cnpj-validator');
+const User = require('../models/User');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const AuthConfig = require("../config/auth");
 
 module.exports = {
     async create(req, res){
@@ -52,7 +56,7 @@ module.exports = {
     async getAll(req, res){
         try {
             const {page = 1, limit = 10} = req.query;
-            const clinics = await Clinic().paginate({}, {page, limit});
+            const clinics = await Clinic().paginate({}, {page, limit});    
             return res.json(clinics); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading all clinics: '+err});
@@ -61,11 +65,33 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const clinic = await Clinic().findById(req.params.clinicId).populate("address");
+            const clinic = await Clinic().findById(req.params.clinicId);
             return res.json(clinic); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading clinic by id: '+err});
         }
-        
+    },
+    async authenticate(req, res){
+        const {clinicId} = req.body;
+        try{
+            const clinic = await Clinic().findById(clinicId);
+            const user = await User({skipTenant: true}).findById(req.userId);
+
+            if(!user){
+                return res.status(401).send({error: 'User no found: '+email});
+            }
+
+            if(!(user.userType === 'Manager')) {
+                //pesquisar na tabela de funcionários se ele possui acesso a essa clinica caso não erro 401
+            }
+
+            const token = jwt.sign({id: user.id, tenantId: user.tenantId, subTenantId: clinic._id, parentId: user.parentId}, AuthConfig.secret, {
+                expiresIn: 86400,
+            });
+
+            return res.send({user, token});
+        } catch (err) {
+            return res.status(401).send({error: 'Error authenticate user: '+err});
+        }
     },
 };

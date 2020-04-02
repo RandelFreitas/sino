@@ -10,10 +10,13 @@ app.use(bindCurrentNamespace);
 
 requireDir("./src/models");
 
-//Rotas
-app.use("/api", require("./src/routes/ManagerRouter"))
-app.use("/api", require("./src/routes/PatientRouter"));
-app.use("/api", require("./src/routes/ClinicRouter"));
-require("./src/routes/AuthRouter")(app);
+//Config routes
+app.use("/api/level1", require("./src/routes/config/AuthLevel1"));
+app.use("/api/level2", require("./src/routes/config/AuthLevel2"));
+
+app.use("/api/public", require("./src/routes/ManagerRouter"))
+app.use("/api/level1", require("./src/routes/ClinicRouter"));
+app.use("/api/level2", require("./src/routes/PatientRouter"));
+app.use("/api/auth", require("./src/routes/AuthRouter"));
 
 app.listen(3001);

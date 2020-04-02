@@ -38,7 +38,7 @@ module.exports = {
     async getAll(req, res){
         try {
             const {page = 1, limit = 10} = req.query;
-            const managers = await Manager().paginate({}, {page, limit});
+            const managers = await Manager().paginate({}, {page, limit, populate: 'address'});
             return res.json(managers); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading all managers: '+err});
@@ -47,7 +47,7 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const manager = await Manager().findById(req.params.managerId).populate("address");
+            const manager = await (await Manager().findById(req.params.managerId)).populate('address');
             return res.json(manager); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading manager by id: '+err});

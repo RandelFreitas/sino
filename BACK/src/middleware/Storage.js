@@ -7,8 +7,9 @@ exports.bindCurrentNamespace = (req, res, next) => {
 
     ns.run(() => {
         const tenantId = undefined;
-        // const tenantId = "5e8290cb18436f1950c23ace";//5e8290cb18436f1950c23ace - 5e82272c61c7fe2a180f9018
+        const subTenantId = undefined;
         ns.set("tenantId", tenantId);
+        ns.set("subTenantId", subTenantId);
         next();
     });
 };
@@ -19,4 +20,12 @@ exports.getCurrentTenantId = () => {
 
 exports.setCurrentTenantId = (tenantId) => {
     return requestStorage.set("tenantId", tenantId);
+};
+
+exports.getCurrentSubTenantId = () => {
+    return requestStorage.get("subTenantId");
+};
+
+exports.setCurrentSubTenantId = (subTenantId) => {
+    return requestStorage.set("subTenantId", subTenantId);
 };
