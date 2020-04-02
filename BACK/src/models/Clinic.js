@@ -14,9 +14,8 @@ const ClinicSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
   },
-  telefone: {
+  phone: {
     type: String
   },
   address: {

@@ -13,6 +13,7 @@ requireDir("./src/models");
 //Rotas
 app.use("/api", require("./src/routes/ManagerRouter"))
 app.use("/api", require("./src/routes/PatientRouter"));
+app.use("/api", require("./src/routes/ClinicRouter"));
 require("./src/routes/AuthRouter")(app);
 
 app.listen(3001);

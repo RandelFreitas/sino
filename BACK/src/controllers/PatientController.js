@@ -1,11 +1,17 @@
 const mongoose = require("../database/Connect");
 const Patient = require('../models/Patient');
 const Address = require('../models/Address');
+const validator = require('cpf-cnpj-validator');
 
 module.exports = {
     async create(req, res){
         try{
             const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, adresses} = req.body;
+            
+            if(!validator.cpf.isValid(cpf)){
+                return res.status(400).send({error: 'CPF invalid: '+cpf})
+            }
+
             const patient = await Patient().create({name, email, cpf, phone1, phone2, dtBirth, sex, obs});
 
             await Promise.all(adresses.map(async address => {
@@ -53,6 +59,11 @@ module.exports = {
     async updateById(req, res){
         try{
             const {name, email, cpf, phone1, phone2, dtBirth, sex, obs, adresses} = req.body;
+
+            if(!validator.cpf.isValid(cpf)){
+                return res.status(400).send({error: 'CPF invalid: '+cpf})
+            }
+
             const patient = await Patient().findByIdAndUpdate(req.params.patientId, {
                 name, email, cpf, phone1, phone2, dtBirth, sex, obs
             }, {new: true});

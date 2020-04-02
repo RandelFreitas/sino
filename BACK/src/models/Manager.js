@@ -12,7 +12,7 @@ const ManagerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  telefone: {
+  phone: {
     type: String
   },
   cpf: {

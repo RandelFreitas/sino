@@ -9,13 +9,13 @@ const { setCurrentTenantId } = require("../middleware/Storage");
 module.exports = {
     async create(req, res){
         try{
-            const {name, email, cpf, telefone, address, password} = req.body; 
+            const {name, email, cpf, phone, address, password} = req.body; 
             
             if(!validator.cpf.isValid(cpf)){
                 return res.status(400).send({error: 'CPF invalid: '+cpf})
             }
 
-            const manager = await Manager().create({name, email, cpf, telefone});
+            const manager = await Manager().create({name, email, cpf, phone});
             
             setCurrentTenantId(manager._id);
 
