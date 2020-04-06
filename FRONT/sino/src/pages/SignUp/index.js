@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import api from "../../services/api";
 //import Logo from "../../assets/airbnb-logo.svg";
 
-import { Container } from '@material-ui/core';
+import Container  from '@material-ui/core/Container';
 
 class SignUp extends Component {
   state = {
