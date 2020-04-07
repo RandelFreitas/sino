@@ -1,4 +1,4 @@
-export const TOKEN_KEY = "@sino";
+export const TOKEN_KEY = "@token";
 export const isAuthenticated = () => true;
 //export const isAuthenticated = () => localStorage.getItem(TOKEN_KEY) !== null;
 export const getToken = () => localStorage.getItem(TOKEN_KEY);
