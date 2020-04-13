@@ -34,7 +34,7 @@ class SignIn extends Component {
 
   render() {
     return (
-      <Container>
+      <Container component="main" maxWidth="xs">
         <form onSubmit={this.handleSignIn}>
           {this.state.error && <p>{this.state.error}</p>}
           <input
