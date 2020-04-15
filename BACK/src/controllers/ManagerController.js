@@ -47,7 +47,7 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const manager = await (await Manager().findById(req.params.managerId)).populate('address');
+            const manager = await Manager().findOne({_id: req.params.managerId}).populate('address');
             return res.json(manager); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading manager by id: '+err});

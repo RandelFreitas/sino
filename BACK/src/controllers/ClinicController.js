@@ -48,7 +48,7 @@ module.exports = {
             clinic.address = clinicAddress;
             await clinic.save();
 
-            return res.json(clinic);
+            return res.json(await Clinic().findOne({_id: req.params.clinicId}).populate('address'));
         } catch (err) {
             return res.status(400).send({error: 'Error updating clinic: '+err});
         }
@@ -56,7 +56,7 @@ module.exports = {
     async getAll(req, res){
         try {
             const {page = 1, limit = 10} = req.query;
-            const clinics = await Clinic().paginate({}, {page, limit});    
+            const clinics = await Clinic().paginate({}, {page, limit, populate: 'address'});    
             return res.json(clinics); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading all clinics: '+err});
@@ -65,7 +65,7 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const clinic = await Clinic().findById(req.params.clinicId);
+            const clinic = await Clinic().findOne({_id: req.params.clinicId}).populate('address');
             return res.json(clinic); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading clinic by id: '+err});

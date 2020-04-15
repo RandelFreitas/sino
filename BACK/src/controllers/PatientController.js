@@ -27,7 +27,7 @@ module.exports = {
     async getAll(req, res){
         try {
             const {page = 1, limit = 10} = req.query;
-            const patients = await Patient().paginate({}, {page, limit});
+            const patients = await Patient().paginate({}, {page, limit, populate: 'address'});
             return res.json(patients); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading all patients: '+err});
@@ -36,7 +36,7 @@ module.exports = {
     },
     async getById(req, res){
         try {
-            const patient = await Patient({skipTenant: true}).findById(req.params.patientId);
+            const patient = await Patient().findOne({_id: req.params.patientId}).populate('address');
             return res.json(patient); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading patient by id: '+err});
@@ -73,7 +73,7 @@ module.exports = {
             patient.address = patientAddress;
             await patient.save();
 
-            return res.json(patient);
+            return res.json(await Patient().findOne({_id: req.params.patientId}).populate('address'));
         } catch (err) {
             return res.status(400).send({error: 'Error updating patient: '+err});
         }
