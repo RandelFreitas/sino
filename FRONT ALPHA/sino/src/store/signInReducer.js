@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const ACTIONS = {
     SIGNIN: 'SIGNIN',
 }
@@ -17,15 +15,8 @@ export const signInReducer = ( state = ESTATE_INIT, action ) => {
     }
 }
 
-export function singIn(e){
+export function signIn(){
     return dispatch => {
-        console.log('ok');
-        axios.post('https://minhastarefas-api.herokuapp.com/auth/authenticate', e )
-        .then(response => {
-            dispatch({
-                type: ACTIONS.SIGNIN,
-                TOKEN_KEY: response.headers.TOKEN_KEY
-            })
-        })
+        console.log('ok')
     }
 }

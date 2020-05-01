@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
-import { signIn } from '../../store/signInReducer';
-import { bindActionCreators, compose } from 'redux';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { singIn } from '../../store/signInReducer';
+
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+
+import api from "../../services/api";
+import { login } from "../../services/auth";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,13 +53,33 @@ function Copyright() {
 }
 
 const SignIn = (props) => {
+//  const { className, signIn, ...rest } = props;
   const classes = useStyles();
   
-//  const { history } = props;
+  const { history } = props;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    props.singIn();
+  })
+
+  const handleSignIn = async e => {
+    e.preventDefault();
+    if(!email || !password){
+      setError("Preencha e-mail e senha para continuar!")
+    }else {
+      try {
+        const response = await api.post("/auth/authenticate", { email, password });
+        login(response.data.token);
+        history.push('/app');
+      }catch (err) {
+        setError("Houve um problema com o login, verifique suas credenciais.")
+      }
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -66,7 +91,7 @@ const SignIn = (props) => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate onSubmit={props.signIn} >
+        <form className={classes.form} noValidate onSubmit={handleSignIn}>
           <Typography >
             {error}
           </Typography>
@@ -87,14 +112,14 @@ const SignIn = (props) => {
             label="Senha"
             type="password"
             id="password"
-            autoComplete="current-password" onChange={e => setPassword(e.target.value)} value={password}/>
+            autoComplete="current-password" onChange={e => setPassword(e.target.value)} type="password" value={password}/>
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar"/>
           <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
             Login
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="/" variant="body2">
+              <Link href="#" variant="body2">
                 Esqueci a senha
               </Link>
             </Grid>
@@ -113,11 +138,21 @@ const SignIn = (props) => {
   );
 };
 
+SignIn.propTypes = {
+//  className: PropTypes.string,
+//  singIn: PropTypes.array.isRequired,
+  history: PropTypes.object
+};
+
+
 const mapStateToProps = state => ({
-  signIn: state.signIn.signIn
+  signIn: state.singIn
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({signIn}, dispatch);
+  bindActionCreators({singIn}, dispatch);
 
-export default compose (connect(mapStateToProps, mapDispatchToProps))(withRouter(SignIn));
+export default connect(mapDispatchToProps, mapStateToProps)(withRouter(SignIn));
+
+
+//onSubmit={#}
