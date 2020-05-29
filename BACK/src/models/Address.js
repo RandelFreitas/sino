@@ -1,6 +1,6 @@
 const mongoose = require("../database/Connect");
 
-const { tenantModel } = require("../middleware/MultiTenant");
+const { tenantlessModel } = require("../middleware/MultiTenant");
 
 const AddressSchema = new mongoose.Schema({
     state: {
@@ -40,4 +40,4 @@ const AddressSchema = new mongoose.Schema({
     }
 });
 
-module.exports = tenantModel("Address", AddressSchema);
+module.exports = tenantlessModel("Address", AddressSchema);
