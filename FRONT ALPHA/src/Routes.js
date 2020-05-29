@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
 import { SignUp, SignIn } from "./pages";
-import { MenuManager } from "./pages/App";
+import Sino from "./pages/App";
 //import { RouteWithLayout } from "./components";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -24,7 +24,7 @@ const Routes = () => (
     <Switch>
         <Route exact path="/" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
-        <PrivateRoute exact path="/app" component={MenuManager}/>
+        <PrivateRoute path="/app" component={Sino}/>
     </Switch>
   </BrowserRouter>
 );
