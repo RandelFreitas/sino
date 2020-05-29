@@ -43,7 +43,36 @@ const SignUp = props => {
   const [cpf, setCpf] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [street, setStreet] = useState('');
+  const [number, setNumber] = useState('');
+  const [type, setType] = useState('');
+  const [district, setDistrict] = useState('');
+  const [zip, setZip] = useState('');
+  const [obs, setObs] = useState('');
+
   const [erro, setErro] = useState('');
+
+  const adm = {
+        name,
+        cpf,
+        email,
+        phone,
+        password,
+        address:
+          {
+            state,
+            city,
+            street,
+            number,
+            type,
+            district,
+            zip,
+            obs
+          }
+        };
 
   const handleSignUp = async e => {
     e.preventDefault();
@@ -51,7 +80,8 @@ const SignUp = props => {
       setErro("Preencha todos os dados para se cadastrar")
     } else{
       try{
-        await api.post("/maneger", { name, email, cpf, phone, password });
+        //console.log(adm);
+        await api.post("/public/managers", adm);
         history.push("/");
       }catch (err) {
         console.log(err);
@@ -87,7 +117,7 @@ const SignUp = props => {
                 autoFocus
                 type="text"
                 placeholder="Nome"
-                onChange={e => setName({ name: e.target.value })}
+                onChange={e => setName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -101,7 +131,7 @@ const SignUp = props => {
                 autoComplete="email"
                 type="email"
                 placeholder="Endereço de e-mail"
-                onChange={e => setEmail({ email: e.target.value })}
+                onChange={e => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -114,7 +144,7 @@ const SignUp = props => {
                 name="cpf"
                 type="text"
                 placeholder="Cpf"
-                onChange={e => setCpf({ cpf: e.target.value })}
+                onChange={e => setCpf(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -127,9 +157,115 @@ const SignUp = props => {
                 name="phone"
                 type="text"
                 placeholder="Telefone"
-                onChange={e => setPhone({ phone: e.target.value })}
+                onChange={e => setPhone(e.target.value)}
               />
             </Grid>
+
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="state"
+                label="Estado"
+                name="state"
+                type="text"
+                placeholder="Estado"
+                onChange={e => setState(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="city"
+                label="Cidade"
+                name="city"
+                type="text"
+                placeholder="Cidade"
+                onChange={e => setCity(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="street"
+                label="Rua"
+                name="street"
+                type="text"
+                placeholder="Rua"
+                onChange={e => setStreet(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="number"
+                label="Nº"
+                name="number"
+                type="text"
+                placeholder="Numero"
+                onChange={e => setNumber(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="type"
+                label="Tipo"
+                name="type"
+                type="text"
+                placeholder="Tipo"
+                onChange={e => setType(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="district"
+                label="Bairro"
+                name="district"
+                type="text"
+                placeholder="Bairro"
+                onChange={e => setDistrict(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="zip"
+                label="CEP"
+                name="zip"
+                type="text"
+                placeholder="CEP"
+                onChange={e => setZip(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="obs"
+                label="Obs"
+                name="obs"
+                type="text"
+                placeholder="Obs"
+                onChange={e => setObs(e.target.value)}
+              />
+            </Grid>
+
             <Grid item xs={12} sm={12}>
             <TextField
                 variant="outlined"
@@ -152,7 +288,7 @@ const SignUp = props => {
                 type="password"
                 id="passwordC"
                 placeholder="Senha"
-                onChange={e => setPassword({ password: e.target.value })}
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
             <Button

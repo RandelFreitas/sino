@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useState } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { singIn } from '../../store/signInReducer';
 
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,7 +13,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
 
 import api from "../../services/api";
 import { login } from "../../services/auth";
@@ -42,18 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © SINO '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const SignIn = (props) => {
-//  const { className, signIn, ...rest } = props;
+const SignIn = props => {
   const classes = useStyles();
   
   const { history } = props;
@@ -62,16 +46,13 @@ const SignIn = (props) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    props.singIn();
-  })
-
   const handleSignIn = async e => {
     e.preventDefault();
     if(!email || !password){
       setError("Preencha e-mail e senha para continuar!")
     }else {
       try {
+        console.log(email);
         const response = await api.post("/auth/authenticate", { email, password });
         login(response.data.token);
         history.push('/app');
@@ -92,9 +73,7 @@ const SignIn = (props) => {
           Login
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSignIn}>
-          <Typography >
-            {error}
-          </Typography>
+          {error && <p>{error}</p>}
           <TextField variant="outlined"
             margin="normal"
             required
@@ -110,7 +89,6 @@ const SignIn = (props) => {
             fullWidth
             name="password"
             label="Senha"
-            type="password"
             id="password"
             autoComplete="current-password" onChange={e => setPassword(e.target.value)} type="password" value={password}/>
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar"/>
@@ -119,40 +97,24 @@ const SignIn = (props) => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueci a senha
+              <Link to="#" variant="body2">
+                Esqueci minha senha
               </Link>
             </Grid>
             <Grid item>
               <Link to="/signup" variant="body2">
-                Cadastre-se aqui!
+                {"Cadastre-se"}
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 };
 
 SignIn.propTypes = {
-//  className: PropTypes.string,
-//  singIn: PropTypes.array.isRequired,
   history: PropTypes.object
 };
 
-
-const mapStateToProps = state => ({
-  signIn: state.singIn
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({singIn}, dispatch);
-
-export default connect(mapDispatchToProps, mapStateToProps)(withRouter(SignIn));
-
-
-//onSubmit={#}
+export default withRouter(SignIn);
