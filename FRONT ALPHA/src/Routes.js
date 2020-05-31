@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { isAuthenticated } from "./services/auth";
 import { SignUp, SignIn } from "./pages";
 import Sino from "./pages/App";
+//import RoutesLevel from "./pages/App/RoutesLevel";
 //import { RouteWithLayout } from "./components";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
