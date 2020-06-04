@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Dashboard() {
+export default function ClinicList() {
   const classes = useStyles();
 
   return (

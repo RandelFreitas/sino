@@ -1,11 +1,9 @@
 import React from 'react';
 
-const MenuManager = () => {
+export default function MenuManager() {
   return (
     <div>
-      <h1>MENU ADM</h1>
+      Menu ADM
     </div>
   );
-};
-
-export default MenuManager;
+}

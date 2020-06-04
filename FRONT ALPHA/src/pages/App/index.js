@@ -4,9 +4,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { BrowserRouter, Route, Switch, Link, useRouteMatch } from 'react-router-dom';
-import Dashboard from './Dashboard';
 import MenuManager from './MenuManager';
-import RoutesLevel from './RoutesLevel';
+import ClinicList from './ClinicList';
+import Clinic from './Clinic';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,13 +36,10 @@ export default function Sino() {
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6" className={classes.title}>
-                SINO
+                <Link to={`${match.url}`}>SINO</Link>
               </Typography>
               <Typography>
-                <Link to={`${match.url}/`}>Home</Link>
-              </Typography>
-              <Typography>
-                <Link to={`${match.url}/menu`}>Menu</Link>
+                <Link to={`${match.url}/menu`}>Configurações</Link>
               </Typography>
             </Toolbar>
           </AppBar>
@@ -53,10 +50,10 @@ export default function Sino() {
             <MenuManager />
           </Route>
           <Route path={`${match.url}/clinica`}>
-            <RoutesLevel />
+            <Clinic />
           </Route>
           <Route path={`${match.url}/`}>
-            <Link to={`${match.url}/clinica`}><Dashboard /></Link>
+            <Link to={`${match.url}/clinica`}><ClinicList /></Link>
           </Route>
         </Switch>
       </div>
