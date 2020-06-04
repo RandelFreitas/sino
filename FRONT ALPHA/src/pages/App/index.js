@@ -53,7 +53,7 @@ export default function Sino() {
             <Clinic />
           </Route>
           <Route path={`${match.url}/`}>
-            <Link to={`${match.url}/clinica`}><ClinicList /></Link>
+            <ClinicList />
           </Route>
         </Switch>
       </div>
