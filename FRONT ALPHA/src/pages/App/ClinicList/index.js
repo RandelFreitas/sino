@@ -64,9 +64,7 @@ const ClinicList = (props) => {
     }     
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia className={classes.media} 
-          image="/static/img/mais.jpg"
-        />
+        <CardMedia className={classes.media} image="/static/img/mais.jpg"/>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             Cadastrar nova clínica
