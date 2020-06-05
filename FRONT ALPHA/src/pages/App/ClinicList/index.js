@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CardActions from '@material-ui/core/CardActions';
 
 import { Link, useRouteMatch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -29,35 +32,50 @@ const ClinicList = (props) => {
     props.list();
   },[])
 
-  function teste (){
-    console.log(clinics.clinics.docs[1].cnpj);
-  }
-
   const classes = useStyles();
   let match = useRouteMatch();
 
+  return(
+    <Grid container>
+      {clinics.map( clinic => {
         return(
-          <Link to={`${match.url}/clinica`}>
-            <Typography onClick={teste}>TESTE </Typography>
-            <Card className={classes.root}>
+          <Grid item className={classes.root} md={3} key={clinic._id}>
+            <Link to={`${match.url}/clinica`}>
               <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image="/static/img/clinica01.png"
-                  title="Contemplative Reptile"
-                />
+                <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
-                    Clinica
+                    {clinic.name}
                   </Typography>
                   <Typography variant="body2" color="textSecondary" component="p">
-                    Guaraciaba do Norte - CE
+                    {clinic.address.city}
                   </Typography>
                 </CardContent>
               </CardActionArea>
-            </Card>
-          </Link>
+            </Link>
+            <CardActions>
+              <Button size="small" color="primary">
+                <Link to={`${match.url}/menu`}> Configurações </Link>
+              </Button>
+            </CardActions>
+          </Grid>
         )
+      })
+    }     
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia className={classes.media} 
+          image="/static/img/mais.jpg"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            Cadastrar nova clínica
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  </Grid>
+  )
 }
 
 ClinicList.prototypes = {
@@ -65,7 +83,7 @@ ClinicList.prototypes = {
 };
 
 const mapStateToProps = state => ({
-  clinics: state.clinic
+  clinics: state.clinic.clinics
 });
 
 const mapDispatchToProps = dispatch =>

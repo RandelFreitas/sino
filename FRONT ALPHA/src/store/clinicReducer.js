@@ -14,7 +14,7 @@ const ESTADO_INICIAL = {
 export const clinicReducer = (state = ESTADO_INICIAL, action) => {
     switch(action.type){
         case ACTIONS.LIST:
-            return {...state, clinics: action.clinics}
+            return {...state, clinics: action.clinics.docs}
         default:
             return state;
     }
