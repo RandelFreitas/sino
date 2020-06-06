@@ -1,6 +1,6 @@
 const mongoose = require("../database/Connect");
 const mongoosePaginate = require("mongoose-paginate");
-const { tenantlessModel } = require("../middleware/MultiTenant");
+const { tenantModel } = require("../middleware/MultiTenant");
 const Address = require('./Address');
 
 const ClinicSchema = new mongoose.Schema({
@@ -25,5 +25,5 @@ const ClinicSchema = new mongoose.Schema({
 });
 
 ClinicSchema.plugin(mongoosePaginate);
-const Clinic = tenantlessModel("Clinic", ClinicSchema);
+const Clinic = tenantModel("Clinic", ClinicSchema);
 module.exports = Clinic;
