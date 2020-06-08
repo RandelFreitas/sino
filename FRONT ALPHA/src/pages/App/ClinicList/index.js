@@ -12,8 +12,9 @@ import CardActions from '@material-ui/core/CardActions';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { list } from '../../../store/clinicReducer';
+import { list, authClinic } from '../../../store/clinicReducer';
 import PropTypes from 'prop-types';
+
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
 });
 
 const ClinicList = (props) => {
-  const { clinics } = props; 
+  const { clinics } = props;
 
   useEffect(() => {
     props.list();
@@ -58,6 +59,9 @@ const ClinicList = (props) => {
               <Button size="small" color="primary">
                 <Link to={`${match.url}/menu`}> Configurações </Link>
               </Button>
+              <Button size="small" color="primary">
+                <p onClick={() => props.authClinic(clinic._id)}> HISTORY </p>
+              </Button>
             </CardActions>
           </Grid>
         )
@@ -86,7 +90,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({list}, dispatch);
+  bindActionCreators({list, authClinic}, dispatch);
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicList);

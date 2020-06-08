@@ -1,4 +1,5 @@
 import api from '../services/api';
+import { useHistory } from 'react-router-dom';
 
 const ACTIONS = {
     LIST: 'CLINIC_LIST',
@@ -17,6 +18,8 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
     switch(action.type){
         case ACTIONS.LIST:
             return {...state, clinics: action.clinics.docs}
+        case ACTIONS.AUTH:
+            return {...state, token: action.token }
         default:
             return state;
     }
@@ -29,19 +32,21 @@ export function list(){
             dispatch({
                 type: ACTIONS.LIST,
                 clinics: Response.data,
-
             })
         })
     }
 }
 
-export function authClinic(){
+export function authClinic(id){
     return dispatch => {
-        api.get('/level1/clinics/uthenticate')
+        api.post('/level1/clinics/authenticate', ({"clinicId":id}))
         .then(Response => {
-            dispatch(
-                console.log("ok")
-            )
+            dispatch({
+                type: ACTIONS.AUTH,
+                token: Response.data
+            })
         })
+        //let history = useHistory();
+        //history.push("/ok");
     }
 }
