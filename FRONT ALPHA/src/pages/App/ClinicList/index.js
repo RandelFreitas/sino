@@ -39,21 +39,22 @@ const ClinicList = (props) => {
     <Grid container>
       {clinics.map( clinic => {
         return(
-          <Grid item className={classes.root} md={3} key={clinic._id}>
-            <Link to={`${match.url}/clinica`}>
-              <CardActionArea>
-                <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {clinic.name}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {clinic.address.city}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Link>
+          <Grid item className={classes.root} md={3} key={clinic._id}>  
+            <CardActionArea>
+              <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {clinic.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {clinic.address.city}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
             <CardActions>
+              <Button size="small" color="primary">
+                <Link to={`${match.url}/clinica?${clinic._id}`}> Gerenciar </Link>
+              </Button>
               <Button size="small" color="primary">
                 <Link to={`${match.url}/menu`}> Configurações </Link>
               </Button>

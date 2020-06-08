@@ -2,13 +2,15 @@ import api from '../services/api';
 
 const ACTIONS = {
     LIST: 'CLINIC_LIST',
+    AUTH: 'AUTH_CLINIC',
     ADD: 'CLINIC_ADD',
     REMOVE: 'CLINIC_REMOVE',
     UPDATE: 'CLINIC_UPDATE',
 }
 
 const ESTADO_INICIAL = {
-    clinics: []
+    clinics: [],
+    token: ''
 }
 
 export const clinicReducer = (state = ESTADO_INICIAL, action) => {
@@ -26,8 +28,20 @@ export function list(){
         .then(Response => {
             dispatch({
                 type: ACTIONS.LIST,
-                clinics: Response.data
+                clinics: Response.data,
+
             })
+        })
+    }
+}
+
+export function authClinic(){
+    return dispatch => {
+        api.get('/level1/clinics/uthenticate')
+        .then(Response => {
+            dispatch(
+                console.log("ok")
+            )
         })
     }
 }
