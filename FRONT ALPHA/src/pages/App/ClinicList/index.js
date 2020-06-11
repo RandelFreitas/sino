@@ -52,15 +52,16 @@ const ClinicList = (props) => {
                 </Typography>
               </CardContent>
             </CardActionArea>
+            
             <CardActions>
               <Button size="small" color="primary">
-                <Link to={`${match.url}/clinica?${clinic._id}`}> Gerenciar </Link>
+                <Link to={`${match.url}/clinica`}> Gerenciar </Link>
               </Button>
               <Button size="small" color="primary">
                 <Link to={`${match.url}/menu`}> Configurações </Link>
               </Button>
               <Button size="small" color="primary">
-                <p onClick={() => props.authClinic(clinic._id)}> HISTORY </p>
+                <p onClick={props.authClinic}> HISTORY </p>
               </Button>
             </CardActions>
           </Grid>

@@ -1,5 +1,5 @@
 import api from '../services/api';
-import { useHistory } from 'react-router-dom';
+import history from "../services/history";
 
 const ACTIONS = {
     LIST: 'CLINIC_LIST',
@@ -37,16 +37,22 @@ export function list(){
     }
 }
 
-export function authClinic(id){
+export const authClinic = () => {
+    return dispatch => {
+        history.push('/');
+        //console.log("ok");
+    }
+}
+
+/*export function authClinic(id){
     return dispatch => {
         api.post('/level1/clinics/authenticate', ({"clinicId":id}))
         .then(Response => {
             dispatch({
                 type: ACTIONS.AUTH,
                 token: Response.data
-            })
+            });
+            history.push('/menu');
         })
-        //let history = useHistory();
-        //history.push("/ok");
     }
-}
+}*/
