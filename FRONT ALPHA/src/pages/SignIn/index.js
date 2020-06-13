@@ -97,7 +97,7 @@ const SignIn = props => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="#" variant="body2">
+              <Link to="/forgot-password" variant="body2">
                 Esqueci minha senha
               </Link>
             </Grid>

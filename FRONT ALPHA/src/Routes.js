@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, Redirect, Router } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
-import { SignUp, SignIn, NotFound } from "./pages";
+import { SignUp, SignIn, NotFound, ForgotPassword } from "./pages";
 import Sino from "./pages/App";
 
 import history from './services/history';
@@ -26,6 +26,7 @@ const Routes = () => (
         <Route exact path="/" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/not-found" component={NotFound} />
+        <Route exact path="/forgot-password" component={ForgotPassword} />
         <PrivateRoute path="/app" component={Sino}/>
         <Redirect to="/not-found" />
     </Switch>
