@@ -2,14 +2,10 @@ import React from "react";
 import { Route, Switch, Redirect, Router } from "react-router-dom";
 
 import { isAuthenticated } from "./services/auth";
-import { SignUp, SignIn } from "./pages";
+import { SignUp, SignIn, NotFound } from "./pages";
 import Sino from "./pages/App";
 
 import history from './services/history';
-//import RoutesLevel from "./pages/App/RoutesLevel";
-//import { RouteWithLayout } from "./components";
-
-
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -29,7 +25,9 @@ const Routes = () => (
     <Switch>
         <Route exact path="/" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/not-found" component={NotFound} />
         <PrivateRoute path="/app" component={Sino}/>
+        <Redirect to="/not-found" />
     </Switch>
   </Router>
 );
