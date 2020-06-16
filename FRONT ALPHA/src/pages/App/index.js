@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { mainListItems } from './components/menu'
+import { mainListItems } from './components/menu';
+//import { bindActionCreators } from 'redux';
+//import { connect } from 'react-redux';
+//import { byId } from '../../store/managerReducer';
+//import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -107,7 +111,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Sino() {
+const Menu = () => {
+
   const classes = useStyles();
   let match = useRouteMatch();
   const [open, setOpen] = React.useState(false);
@@ -119,7 +124,7 @@ export default function Sino() {
     setOpen(false);
   };
   
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div>
@@ -132,8 +137,7 @@ export default function Sino() {
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
@@ -147,9 +151,9 @@ export default function Sino() {
               </Badge>
             </IconButton>
             <IconButton color="inherit">
-              <Link className={classes.link} to={`${match.url}/menu`}>
+              <a>
                 <SettingsIcon />
-              </Link>
+              </a>
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -165,14 +169,22 @@ export default function Sino() {
         </Drawer>
 
         <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid>
-            <RoutesApp />
-          </Grid>
-        </Container>
-      </main>
+          <div className={classes.appBarSpacer} />
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid>
+              <RoutesApp />
+            </Grid>
+          </Container>
+        </main>
       </div>
     </div>
   );
 };
+
+export default Menu;
+/*
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({byId}, dispatch);
+
+export default connect(null, mapDispatchToProps)(Menu);
+*/
