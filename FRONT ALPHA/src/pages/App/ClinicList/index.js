@@ -55,13 +55,10 @@ const ClinicList = (props) => {
             
             <CardActions>
               <Button size="small" color="primary">
-                <Link to={`${match.url}/clinica`}> Gerenciar </Link>
+                <p onClick={ () => props.authClinic(clinic._id)}> Gerenciar </p>
               </Button>
               <Button size="small" color="primary">
                 <Link to={`${match.url}/menu`}> Configurações </Link>
-              </Button>
-              <Button size="small" color="primary">
-                <p onClick={props.authClinic}> HISTORY </p>
               </Button>
             </CardActions>
           </Grid>

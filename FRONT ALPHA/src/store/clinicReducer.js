@@ -1,5 +1,6 @@
 import api from '../services/api';
 import history from "../services/history";
+import { setTokenLocalStorage } from '../services/auth';
 
 const ACTIONS = {
     LIST: 'CLINIC_LIST',
@@ -38,22 +39,23 @@ export function list(){
     }
 }
 
-export const authClinic = () => {
-    return dispatch => {
-        history.push('/');
-        //console.log("ok");
-    }
-}
-
-/*export function authClinic(id){
+export function authClinic(id){
     return dispatch => {
         api.post('/level1/clinics/authenticate', ({"clinicId":id}))
         .then(Response => {
             dispatch({
                 type: ACTIONS.AUTH,
-                token: Response.data
-            });
-            history.push('/menu');
+                token: Response.data.token,
+            }, history.push('/app/clinica'))
         })
     }
-}*/
+}
+
+/*
+export function authClinic(id){
+    return dispatch => {
+        //history.push('/level1/clinics/aute');
+        console.log(id);
+    }
+}
+*/

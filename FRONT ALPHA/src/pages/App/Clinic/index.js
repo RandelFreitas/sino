@@ -1,7 +1,18 @@
 import React from "react";
+import { connect } from 'react-redux';
 
-export default function Clinic (){
+const Clinic = (props) => {
+    const { token } = props;
     return(
-        <h1>CLINICA</h1>
+        <div>
+            ok
+            {token}
+        </div>
     )
 }
+
+const mapStateToProps = state => ({
+    token: state.clinic.token
+});
+
+export default connect(mapStateToProps)(Clinic);
