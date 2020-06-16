@@ -162,13 +162,12 @@ export default function Sino() {
           <Divider />
           <List>{mainListItems}</List>
           <Divider />
-          
         </Drawer>
 
         <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+          <Grid>
             <RoutesApp />
           </Grid>
         </Container>
