@@ -8,9 +8,16 @@ import { Divider,
   CardActions,
   CardMedia,
   Typography,
+  Tab,
+  Paper,
+  Tabs
  } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    marginBottom: 8
+  },
   middle: {
     width: '46%',
     margin: 8,
@@ -58,10 +65,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuManager() {
   const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <div>
-      <h3>Configurações</h3>
+      <Paper className={classes.root}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+        >
+          <Tab label="Perfil" />
+          <Tab label="Clinicas" />
+          <Tab label="Equipe" />
+        </Tabs>
+      </Paper>
       <Divider/>
         <Card className={classes.card}>
           <CardActionArea>
