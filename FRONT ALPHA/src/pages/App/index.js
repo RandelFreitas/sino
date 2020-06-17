@@ -1,10 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { mainListItems } from './components/menu';
-//import { bindActionCreators } from 'redux';
-//import { connect } from 'react-redux';
-//import { byId } from '../../store/managerReducer';
-//import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,9 +15,18 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import SettingsIcon from '@material-ui/icons/Settings';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import PeopleIcon from '@material-ui/icons/People';
+import WorkIcon from '@material-ui/icons/Work';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 
 import RoutesApp from './routesApp';
 
@@ -108,21 +112,31 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: 'none',
     color: 'white',
-  }
+  },
+  menu: {
+    display: 'none'
+  },
 }));
 
 const Menu = () => {
-
   const classes = useStyles();
   let match = useRouteMatch();
-  const [open, setOpen] = React.useState(false);
-
+  
+  const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  
+  const [menu, setMenu] = useState(false);
+  const menuManagerOpen = () => {
+    setMenu(true);
+  }
+  const menuManagerClose = () => {
+    setMenu(false);
+  }
   
   //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -164,8 +178,81 @@ const Menu = () => {
             </IconButton>
           </div>
           <Divider />
-          <List>{mainListItems}</List>
+          <List className={clsx( menu && classes.menu)} menu={menu}>
+            <div>
+              <ListItem button>
+                <ListItemIcon>
+                  <MonetizationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary="Financeiro" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <AssessmentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Clínicas" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <WorkIcon />
+                </ListItemIcon>
+                <ListItemText primary="Equipes" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <AssessmentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Relatórios" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Configurações" />
+              </ListItem>
+            </div>
+          </List>
           <Divider />
+          <List>
+            <div>
+              <ListItem button>
+                <ListItemIcon>
+                  <DateRangeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Agenda" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary="Pacientes" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <WorkIcon />
+                </ListItemIcon>
+                <ListItemText primary="Equipe" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <MonetizationOnIcon />
+                </ListItemIcon>
+                <ListItemText primary="Financeiro" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <AssessmentIcon />
+                </ListItemIcon>
+                <ListItemText primary="Relatórios" />
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Configurações" />
+              </ListItem>
+            </div>
+          </List>
         </Drawer>
 
         <main className={classes.content}>

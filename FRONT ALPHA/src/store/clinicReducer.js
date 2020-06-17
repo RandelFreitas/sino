@@ -46,7 +46,10 @@ export function authClinic(id){
             dispatch({
                 type: ACTIONS.AUTH,
                 token: Response.data.token,
-            }, history.push('/app/clinica'))
+            },
+                setTokenLocalStorage(Response.data.token), 
+                history.push('/app/clinica')
+            )
         })
     }
 }
