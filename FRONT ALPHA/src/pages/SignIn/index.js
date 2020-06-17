@@ -51,8 +51,6 @@ const SignIn = props => {
       password: password
     }
     props.auth1(login)
-    setEmail('')
-    setPassword('')
   };
 
   return (
