@@ -1,5 +1,5 @@
 import api from '../services/api';
-import history from '../services/history';
+//import history from '../services/history';
 
 const ACTIONS = {
     BYID: 'MANAGER_BY_ID'

@@ -18,11 +18,20 @@ import PropTypes from 'prop-types';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 300,
+    maxHeight: 300,
     margin: 50,
   },
   media: {
     height: 140,
+  },
+  button: {
+    width: '100%',
+    marginLeft: 50,
+    color: 'green',
+  },
+  maxCaracter: {
+    maxLength: 10,
   },
 });
 
@@ -31,51 +40,48 @@ const ClinicList = (props) => {
 
   useEffect(() => {
     props.list();
-  },[])
+  },[]);
 
   const classes = useStyles();
   let match = useRouteMatch();
 
   return(
     <Grid container>
+      <Grid item className={classes.button}>
+        <Button variant="contained" color="primary">
+          Adicionar nova Clínica
+        </Button>
+      </Grid>
       {clinics.map( clinic => {
         return(
           <Grid item className={classes.root} md={3} key={clinic._id}>  
-            <CardActionArea>
-              <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {clinic.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {clinic.address.city}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            
-            <CardActions>
-              <Button size="small" color="primary">
-                <p onClick={ () => props.authClinic(clinic._id)}> Gerenciar </p>
-              </Button>
-              <Button size="small" color="primary">
-                <Link to={`${match.url}/menu`}> Configurações </Link>
-              </Button>
-            </CardActions>
+            <Card>
+              <CardActionArea>
+                <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {clinic.name}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {clinic.address.city}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              
+              <CardActions>
+                <Button size="small" color="primary">
+                  <p onClick={ () => props.authClinic(clinic._id)}> Gerenciar </p>
+                </Button>
+                <Button size="small" color="primary">
+                  <Link to={`${match.url}/menu`}> Configurações </Link>
+                </Button>
+              </CardActions>
+            </Card>
           </Grid>
         )
       })
     }     
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image="/static/img/mais.jpg"/>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Cadastrar nova clínica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
-  </Grid>
+    </Grid>
   )
 }
 
