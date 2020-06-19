@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function MenuManager() {
+export default function ClinicSetup() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -78,8 +78,7 @@ export default function MenuManager() {
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
-          textColor="primary"
-        >
+          textColor="primary">
           <Tab label="Perfil" />
           <Tab label="Clinicas" />
           <Tab label="Equipe" />
@@ -96,12 +95,12 @@ export default function MenuManager() {
           </CardActionArea>
           <CardActions>
             <Button className={classes.center} size="small" color="primary">
-              Mudar Foto
+              Alterar Foto
             </Button>
           </CardActions>
           <CardActions>
             <Typography className={classes.center} variant='h5'>
-              Dr. Marcos Randel
+              
             </Typography>
           </CardActions>
         </Card>
@@ -122,7 +121,7 @@ export default function MenuManager() {
         </div>
         <div>
           <TextField className={classes.middle}
-            label="Cpf:"
+            label="CNPJ:"
             InputLabelProps={{ shrink: true }}
             variant="outlined"
             />
@@ -178,7 +177,7 @@ export default function MenuManager() {
         </div>
         <Divider/>
         <Button className={classes.button} variant="contained" color="primary">
-          Editar
+          Salvar
         </Button>
       </Card>
     </div>

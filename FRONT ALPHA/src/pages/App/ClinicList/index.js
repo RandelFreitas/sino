@@ -12,8 +12,10 @@ import CardActions from '@material-ui/core/CardActions';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { list, authClinic } from '../../../store/clinicReducer';
+import { list } from '../../../store/clinicReducer';
+import { auth2 } from '../../../store/authReducer';
 import PropTypes from 'prop-types';
+import ModalMessager from '../../../components/Modal';
 
 
 const useStyles = makeStyles({
@@ -28,10 +30,13 @@ const useStyles = makeStyles({
   button: {
     width: '100%',
     marginLeft: 50,
-    color: 'green',
   },
   maxCaracter: {
     maxLength: 10,
+  },
+  link: {
+    textDecoration: 'none',
+    color: 'white'
   },
 });
 
@@ -47,11 +52,7 @@ const ClinicList = (props) => {
 
   return(
     <Grid container>
-      <Grid item className={classes.button}>
-        <Button variant="contained" color="primary">
-          Adicionar nova Clínica
-        </Button>
-      </Grid>
+      <ModalMessager />
       {clinics.map( clinic => {
         return(
           <Grid item className={classes.root} md={3} key={clinic._id}>  
@@ -69,18 +70,17 @@ const ClinicList = (props) => {
               </CardActionArea>
               
               <CardActions>
-                <Button size="small" color="primary">
-                  <p onClick={ () => props.authClinic(clinic._id)}> Gerenciar </p>
+                <Button variant="contained" color="primary">
+                  <a onClick={ () => props.auth2(clinic._id)}> Gerenciar </a>
                 </Button>
-                <Button size="small" color="primary">
-                  <Link to={`${match.url}/menu`}> Configurações </Link>
+                <Button variant="contained" color="primary">
+                  <Link className={classes.link} to={`${match.url}/clinicSetup`}> Configurações </Link>
                 </Button>
               </CardActions>
             </Card>
           </Grid>
-        )
-      })
-    }     
+        )})
+      }     
     </Grid>
   )
 }
@@ -94,7 +94,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({list, authClinic}, dispatch);
+  bindActionCreators({list, auth2}, dispatch);
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicList);

@@ -80,7 +80,6 @@ const SignUp = props => {
       setErro("Preencha todos os dados para se cadastrar")
     } else{
       try{
-        //console.log(adm);
         await api.post("/public/managers", adm);
         history.push("/");
       }catch (err) {

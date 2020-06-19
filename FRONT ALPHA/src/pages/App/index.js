@@ -130,7 +130,7 @@ const Menu = () => {
     setOpen(false);
   };
   
-  const [menu, setMenu] = useState(false);
+  const [menu, setMenu] = useState(true);
   const menuManagerOpen = () => {
     setMenu(true);
   }
@@ -165,9 +165,9 @@ const Menu = () => {
               </Badge>
             </IconButton>
             <IconButton color="inherit">
-              <a>
+              <Link className={classes.link} to={`${match.url}/menuSetup`}>
                 <SettingsIcon />
-              </a>
+              </Link>
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -178,9 +178,9 @@ const Menu = () => {
             </IconButton>
           </div>
           <Divider />
-          <List className={clsx( menu && classes.menu)} menu={menu}>
+          <List>
             <div>
-              <ListItem button>
+              <ListItem button className={clsx(!menu && classes.menu)}>
                 <ListItemIcon>
                   <MonetizationOnIcon />
                 </ListItemIcon>
