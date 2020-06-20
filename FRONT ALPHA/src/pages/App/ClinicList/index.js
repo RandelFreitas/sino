@@ -74,7 +74,7 @@ const ClinicList = (props) => {
                   <a onClick={ () => props.auth2(clinic._id)}> Gerenciar </a>
                 </Button>
                 <Button variant="contained" color="primary">
-                  <Link className={classes.link} to={`${match.url}/clinicSetup`}> Configurações </Link>
+                  <Link className={classes.link} to={`${match.url}/clinicSetup/?${clinic._id}`}> Configurações </Link>
                 </Button>
               </CardActions>
             </Card>
