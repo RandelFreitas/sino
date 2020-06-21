@@ -5,6 +5,7 @@ const ACTIONS = {
     LIST: 'CLINIC_LIST',
     ADD: 'CLINIC_ADD',
     BYID: 'CLINIC_BY_ID',
+    CLEAN: 'CLINIC_BY_ID_CLEAN',
     REMOVE: 'CLINIC_REMOVE',
     UPDATE: 'CLINIC_UPDATE',
 }
@@ -21,9 +22,11 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
         case ACTIONS.LIST:
             return {...state, clinics: action.clinics.docs}
         case ACTIONS.BYID:
-            return {...state, clinicById: action.clinicById, loading: action.loading}
+            return {...state, clinicById: action.clinicById}
         case ACTIONS.ADD:
             return {...state, clinics: list}
+        case ACTIONS.CLEAN:
+            return {clinicById: action.clinicById}
         default:
             return state;
     }
@@ -48,7 +51,6 @@ export function getClinicById(id){
             dispatch({
                 type: ACTIONS.BYID,
                 clinicById: Response.data,
-                loading: true,
             })
         })
     }
@@ -61,7 +63,15 @@ export function addClinic(clinic){
             dispatch({
                 type: ACTIONS.ADD,
                 clinic: Response.data
-            }, console.log(Response.data))
+            })
         })
     }
+}
+
+export function cleanClinic(){
+    console.log("ok");
+    return dispatch => dispatch({
+        type: ACTIONS.CLEAN,
+        clinicById: []
+    });
 }

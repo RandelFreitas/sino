@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -17,7 +17,7 @@ import { Divider,
  } from '@material-ui/core';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { addClinic } from '../../../store/clinicReducer';
+import { addClinic, getClinicById } from '../../../store/clinicReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +76,13 @@ const ClinicSetup = (props) => {
     setValue(newValue);
   };
   const { clinicById } = props;
-  let match = useRouteMatch();
+
+  useEffect(()=>{
+    let idUrl = window.location.href;
+    idUrl = idUrl.split('/?');
+    idUrl = idUrl[1];
+    props.getClinicById(idUrl);
+  },[]);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -146,7 +152,7 @@ const ClinicSetup = (props) => {
           <div className={classes.data}>
             <TextField className={classes.middle}
               label="Nome:"
-              
+              value={clinicById.name || ''}
               onChange={event => setName(event.target.value)}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
@@ -249,7 +255,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addClinic }, dispatch);
+  bindActionCreators({ addClinic, getClinicById }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicSetup);
 

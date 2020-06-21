@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { cleanClinic } from '../../store/clinicReducer';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
@@ -44,13 +47,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ModalMessager() {
+const ModalMessager = () => {
   const classes = useStyles();
   let match = useRouteMatch();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
+    cleanClinic();
   };
 
   const handleClose = () => {
@@ -64,41 +68,41 @@ export default function ModalMessager() {
 
   const modal =(
     <Grid item>
-        <Modal
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}>
+      <Modal
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}>
 
-          <Fade in={open}>
-            <Card>
-              <CardActionArea>
-                <CardContent>
-                  <h2 className={classes.title}>Atenção!</h2>
-                  <div className={classes.paper}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      <p>
-                        O cadastro de uma nova clínica acarretará no <br/> aumento de R$ 49,90 em cada mensalidade.
-                      </p>
-                    </Typography>
-                  </div><br/>
-                  <FormControlLabel onClick={()=>acceptOk()} control={<Checkbox value="accept" color="primary" />} label="Estou ciente"/>
-                </CardContent>
-                <CardActions>
-                  <Link className={clsx(classes.link, accept && classes.linkDesabled )} to={`${match.url}/clinicSetup`} disabled>
-                      ACEITAR
-                  </Link>
-                </CardActions>
-              </CardActionArea>
-            </Card>
-          </Fade>
-        </Modal>
-      </Grid>
+        <Fade in={open}>
+          <Card>
+            <CardActionArea>
+              <CardContent>
+                <h2 className={classes.title}>Atenção!</h2>
+                <div className={classes.paper}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    <p>
+                      O cadastro de uma nova clínica acarretará no <br/> aumento de R$ 49,90 em cada mensalidade.
+                    </p>
+                  </Typography>
+                </div><br/>
+                <FormControlLabel onClick={()=>acceptOk()} control={<Checkbox value="accept" color="primary" />} label="Estou ciente"/>
+              </CardContent>
+              <CardActions>
+                <Link className={clsx(classes.link, accept && classes.linkDesabled )} to={`${match.url}/clinicSetup`} disabled>
+                    ACEITAR
+                </Link>
+              </CardActions>
+            </CardActionArea>
+          </Card>
+        </Fade>
+      </Modal>
+    </Grid>
   )
 
   return (
@@ -112,3 +116,8 @@ export default function ModalMessager() {
     </Grid>
   );
 }
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({cleanClinic}, dispatch);
+
+export default connect(mapDispatchToProps)(ModalMessager);
