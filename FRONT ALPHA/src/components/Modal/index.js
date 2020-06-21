@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import { Grid, CardActions, CardContent, CardActionArea, Typography, FormControlLabel, Checkbox } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -22,12 +23,25 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none',
+    margin: 'auto',
     color: 'white',
+    background: '#3f51b5',
+    borderRadius: 4,
+    fontSize: 15,
+    padding: 10,
+  },
+  linkDesabled:{
+    color: 'gray',
+    pointerEvents: 'none'
   },
   button: {
     width: '100%',
     marginLeft: 50,
   },
+  title: {
+    textAlign: 'center',
+    padding: 8
+  }
 }));
 
 export default function ModalMessager() {
@@ -43,16 +57,14 @@ export default function ModalMessager() {
     setOpen(false);
   };
 
-  return (
-    <Grid container>
-      <Grid item>
-        <Button className={classes.button} onClick={handleOpen} variant="contained" color="primary">
-          Adicionar nova Clínica
-        </Button>
-      </Grid>
-      <Grid item>
+  const [accept, setAccept] = useState(true);
+  const acceptOk = () => {
+    setAccept(false);
+  };
+
+  const modal =(
+    <Grid item>
         <Modal
-          aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
           className={classes.modal}
           open={open}
@@ -67,26 +79,36 @@ export default function ModalMessager() {
             <Card>
               <CardActionArea>
                 <CardContent>
+                  <h2 className={classes.title}>Atenção!</h2>
                   <div className={classes.paper}>
-                    <h2 id="transition-modal-title">Atenção!</h2>
                     <Typography gutterBottom variant="h5" component="h2">
                       <p>
                         O cadastro de uma nova clínica acarretará no <br/> aumento de R$ 49,90 em cada mensalidade.
                       </p>
                     </Typography>
                   </div><br/>
-                  <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Estou ciente"/>
+                  <FormControlLabel onClick={()=>acceptOk()} control={<Checkbox value="accept" color="primary" />} label="Estou ciente"/>
                 </CardContent>
                 <CardActions>
-                  <Button variant="contained" color="primary">
-                    <Link className={classes.link} to={`${match.url}/clinicSetup`}>Aceitar</Link>
-                  </Button>
+                  <Link className={clsx(classes.link, accept && classes.linkDesabled )} to={`${match.url}/clinicSetup`} disabled>
+                      ACEITAR
+                  </Link>
                 </CardActions>
               </CardActionArea>
             </Card>
           </Fade>
         </Modal>
       </Grid>
+  )
+
+  return (
+    <Grid container>
+      <Grid item>
+        <Button className={classes.button} onClick={handleOpen} variant="contained" color="primary">
+          Adicionar nova Clínica
+        </Button>
+      </Grid>
+        {modal}
     </Grid>
   );
 }

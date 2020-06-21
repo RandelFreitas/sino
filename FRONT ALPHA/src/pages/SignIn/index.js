@@ -47,8 +47,8 @@ const SignIn = props => {
   const login = (event) => {
     event.preventDefault();
     const login ={
-      email: email,
-      password: password
+      email,
+      password
     }
     props.auth1(login)
   };

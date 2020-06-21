@@ -111,6 +111,7 @@ const SignUp = props => {
                 variant="outlined"
                 required
                 fullWidth
+                value={adm.address.street}
                 id="name"
                 label="Nome"
                 autoFocus

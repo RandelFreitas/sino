@@ -24,10 +24,10 @@ export const authReducer = (state = ESTADO_INICIAL, action) => {
 }
 
 export function auth1(login){
-    const email = login.email;
-    const password = login.password;
+    //const email = login.email;
+    //const password = login.password;
     return dispatch => {
-        api.post('/auth/authenticate', {email, password})
+        api.post('/auth/authenticate', login)
         .then(Response => {
             dispatch({
                     type: ACTIONS.AUTH1,
