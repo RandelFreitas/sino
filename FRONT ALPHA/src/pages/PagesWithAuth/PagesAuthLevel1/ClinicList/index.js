@@ -12,10 +12,10 @@ import CardActions from '@material-ui/core/CardActions';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { list } from '../../../store/clinicReducer';
-import { auth2 } from '../../../store/authReducer';
+import { list } from '../../../../store/clinicReducer';
+import { auth2 } from '../../../../store/authReducer';
 import PropTypes from 'prop-types';
-import ModalMessager from '../../../components/Modal';
+import ModalMessager from '../../../../components/Modal';
 
 
 const useStyles = makeStyles({

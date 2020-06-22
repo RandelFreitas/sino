@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ManagerSetup() {
+const ManagerSetup = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -184,3 +184,5 @@ export default function ManagerSetup() {
     </div>
   );
 }
+
+export default ManagerSetup;

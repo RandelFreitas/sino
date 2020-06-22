@@ -7,7 +7,7 @@ const Clinic = (props) => {
     const token01 = getToken();
     return(
         <div>
-            {token01}<br/>
+            {token01}
         </div>
     )
 }

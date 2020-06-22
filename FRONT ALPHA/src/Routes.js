@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Switch, Redirect, Router } from "react-router-dom";
 
-import { isAuthenticated } from "./services/auth";
-import { SignUp, SignIn, NotFound, ForgotPassword } from "./pages";
-import Sino from "./pages/App";
-
+import Sino from "./pages/PagesWithAuth";
 import history from './services/history';
+
+import { isAuthenticated } from "./services/auth";
+import { SignUp, SignIn, NotFound, ForgotPassword } from "./pages/PagesWithoutAuth";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route

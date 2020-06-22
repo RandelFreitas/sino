@@ -26,7 +26,7 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
         case ACTIONS.ADD:
             return {...state, clinics: list}
         case ACTIONS.CLEAN:
-            return {clinicById: action.clinicById}
+            return {...state, clinicById: action.clinicById}
         default:
             return state;
     }
@@ -63,15 +63,15 @@ export function addClinic(clinic){
             dispatch({
                 type: ACTIONS.ADD,
                 clinic: Response.data
-            })
+            }, history.push('/app'))
         })
     }
 }
 
 export function cleanClinic(){
     console.log("ok");
-    return dispatch => dispatch({
+    return {
         type: ACTIONS.CLEAN,
         clinicById: []
-    });
+    }
 }

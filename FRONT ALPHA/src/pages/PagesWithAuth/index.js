@@ -27,11 +27,11 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import SettingsIcon from '@material-ui/icons/Settings';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 
-import RoutesApp from './routesApp';
+import RoutesLevel1 from './RoutesApp';
 
 const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -116,9 +116,12 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     display: 'none'
   },
+  profile: {
+    paddingRight: 17
+  }
 }));
 
-const Menu = () => {
+const Sino = () => {
   const classes = useStyles();
   let match = useRouteMatch();
   
@@ -137,8 +140,6 @@ const Menu = () => {
   const menuManagerClose = () => {
     setMenu(false);
   }
-  
-  //const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div>
@@ -159,6 +160,10 @@ const Menu = () => {
                 Sino
               </Link>
             </Typography>
+              <div className={classes.profile}>Dr. Marcos Brito</div>
+            <IconButton color="inherit">
+              <Brightness4Icon/>
+            </IconButton>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <NotificationsIcon />
@@ -179,8 +184,8 @@ const Menu = () => {
           </div>
           <Divider />
           <List>
-            <div>
-              <ListItem button className={clsx(!menu && classes.menu)}>
+            <div >
+              <ListItem button >
                 <ListItemIcon>
                   <MonetizationOnIcon />
                 </ListItemIcon>
@@ -214,7 +219,7 @@ const Menu = () => {
           </List>
           <Divider />
           <List>
-            <div>
+            <div className={clsx(menu && classes.menu)}>
               <ListItem button>
                 <ListItemIcon>
                   <DateRangeIcon />
@@ -259,7 +264,7 @@ const Menu = () => {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <Grid>
-              <RoutesApp />
+              <RoutesLevel1 />
             </Grid>
           </Container>
         </main>
@@ -268,7 +273,7 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Sino;
 /*
 const mapDispatchToProps = dispatch =>
   bindActionCreators({byId}, dispatch);

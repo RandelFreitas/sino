@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -13,11 +14,10 @@ import { Divider,
   Typography,
   Tab,
   Paper,
-  Tabs
- } from '@material-ui/core';
+  Tabs } from '@material-ui/core';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { addClinic, getClinicById } from '../../../store/clinicReducer';
+import { addClinic, getClinicById } from '../../../../store/clinicReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +66,14 @@ const useStyles = makeStyles((theme) => ({
   },
   center: {
     margin: 'auto',
+  },
+  mask: {
+    margin: 8,
+    borderWidth: 1,
+    height: 30,
+    borderRadius: 4,
+    borderColor: '#bcbcbc',
+    textContent: 'auto'
   }
 }));
 
@@ -152,7 +160,7 @@ const ClinicSetup = (props) => {
           <div className={classes.data}>
             <TextField className={classes.middle}
               label="Nome:"
-              value={clinicById.name || ''}
+              //value={clinicById.name || ''}
               onChange={event => setName(event.target.value)}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
@@ -167,16 +175,20 @@ const ClinicSetup = (props) => {
           <div>
             <TextField className={classes.middle}
               label="CNPJ:"
+              format="(99) 99999-9999" 
               onChange={event => setCnpj(event.target.value)}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
               />
-            <TextField className={classes.middle}
-              label="Telefone:"
-              onChange={event => setPhone(event.target.value)}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
+            <div>
+              <label>Telefone:</label>
+              <NumberFormat 
+                className={classes.mask}
+                onChange={event => setPhone(event.target.value)}
+                format="(##) #.#### ####" 
+                prefix={'$'} />
+            </div>
+            
           </div>
           <Divider/>
           <div>
@@ -235,7 +247,7 @@ const ClinicSetup = (props) => {
             Salvar
           </Button>
           <Link  to={'/app'}>
-            <Button className={classes.button} variant="contained" color="primary">
+            <Button className={classes.button} variant="outlined" color="primary">
               Cancelar
             </Button>
           </Link>

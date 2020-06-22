@@ -6,7 +6,7 @@ import { clinicReducer } from './clinicReducer';
 import { dentistReducer } from './dentistReducer';
 import { financesReducer } from './financesReducer';
 import { patientReducer } from './patientReducer';
-import { scheduleReduce } from './scheduleReduce';
+import { schedulingReduce } from './schedulingReduce';
 import { secrataryReducer } from './secrataryReducer';
 
 
@@ -17,7 +17,7 @@ const mainReducer = combineReducers({
     dentist: dentistReducer,
     finances: financesReducer,
     patient: patientReducer,
-    schedule: scheduleReduce,
+    scheduling: schedulingReduce,
     secretary: secrataryReducer
 });
 
