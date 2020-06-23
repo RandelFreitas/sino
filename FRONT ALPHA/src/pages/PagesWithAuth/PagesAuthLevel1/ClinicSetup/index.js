@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,8 +17,6 @@ import { Divider,
   Tab,
   Paper,
   Tabs } from '@material-ui/core';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
 import { addClinic, getClinicById } from '../../../../store/clinicReducer';
 
 const useStyles = makeStyles((theme) => ({
@@ -83,40 +83,37 @@ const ClinicSetup = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const { clinicById } = props;
 
-  useEffect(()=>{
-    let idUrl = window.location.href;
-    idUrl = idUrl.split('/?');
-    idUrl = idUrl[1];
-    props.getClinicById(idUrl);
-  },[]);
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [cnpj, setCnpj] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState({
-    state: '',
-    city: '',
-    street: '',
-    number: '',
-    type: '',
-    district: '',
-    zip: '',
-    obs: '',
-  });
-  
-  const createClinic = (event) => {
-    event.preventDefault();
-    const clinic = {
-      name,
-      email,
-      cnpj,
-      phone,
-      address
+  const dataInit = {
+    name: '',
+    email: '',
+    cnpj: '',
+    phone: '',
+    address: {
+      state: '',
+      city: '',
+      district: '',
+      zip: '',
+      obs: ''
     }
-    props.addClinic(clinic);
+  }
+
+  const [clinic, setClinic] = useState(dataInit);
+  const onChange = (event) => {
+    const { name, value } = event.target;
+    setClinic({...clinic, [name]: value });
+    console.log(clinic);
+  }
+
+  const onSubmit = () => {
+    const newClinic = {
+      name: clinic.name,
+      email: clinic.email,
+      cnpj: clinic.cnpj,
+      phone: clinic.phone,
+      address: clinic.address
+    }
+    props.addClinic(newClinic);
   }
   
   return (
@@ -155,19 +152,19 @@ const ClinicSetup = (props) => {
       <Divider/>
 
       <Card className={classes.card}>
-        <form onSubmit={createClinic} noValidate>
           <p style={{margin: 10}}>Dados</p>
           <div className={classes.data}>
             <TextField className={classes.middle}
               label="Nome:"
-              //value={clinicById.name || ''}
-              onChange={event => setName(event.target.value)}
+              name="name"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.middle}
               label="Email:"
-              onChange={event => setEmail(event.target.value)}
+              name="email"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
@@ -175,75 +172,74 @@ const ClinicSetup = (props) => {
           <div>
             <TextField className={classes.middle}
               label="CNPJ:"
-              format="(99) 99999-9999" 
-              onChange={event => setCnpj(event.target.value)}
+              name="cnpj"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
               />
-            <div>
-              <label>Telefone:</label>
-              <NumberFormat 
-                className={classes.mask}
-                onChange={event => setPhone(event.target.value)}
-                format="(##) #.#### ####" 
-                prefix={'$'} />
-            </div>
-            
           </div>
           <Divider/>
           <div>
             <p style={{margin: 10}}>Endereço</p>
             <TextField className={classes.zip}
               label="Cep:"
-              onChange={event => setAddress({zip: event.target.value})}
+              name="zip"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.street}
               label="Rua:"
-              onChange={event => setAddress({...address, street: event.target.value})}
+              name="street"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.district}
               label="Barro:"
-              onChange={event => setAddress({...address, district: event.target.value})}
+              name="district"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.city}
               label="Cidade:"
-              onChange={event => setAddress({...address, city: event.target.value})}
+              name="city"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.state}
               label="Estado:"
-              onChange={event => setAddress({...address, state: event.target.value})}
+              name="state"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.number}
               label="Número:"
-              onChange={event => setAddress({...address, number: event.target.value})}
+              name="number"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.middle}
               label="Tipo:"
-              onChange={event => setAddress({...address, type: event.target.value})}
+              name="type"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
             <TextField className={classes.middle}
               label="Complemento:"
-              onChange={event => setAddress({...address, obs: event.target.value})}
+              name="obs"
+              onChange={onChange}
               InputLabelProps={{ shrink: true }}
               variant="outlined"
             />
           </div>
           <Divider/>
-          <Button type="submit" className={classes.button} variant="contained" color="primary">
+          <Button onClick={onSubmit} className={classes.button} variant="contained" color="primary">
             Salvar
           </Button>
           <Link  to={'/app'}>
@@ -251,7 +247,6 @@ const ClinicSetup = (props) => {
               Cancelar
             </Button>
           </Link>
-        </form>
       </Card>
     </div>
   )

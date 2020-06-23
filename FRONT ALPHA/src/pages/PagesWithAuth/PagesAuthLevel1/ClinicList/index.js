@@ -1,4 +1,9 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
@@ -9,13 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 
-import { Link, useRouteMatch } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import { list } from '../../../../store/clinicReducer';
 import { auth2 } from '../../../../store/authReducer';
-import PropTypes from 'prop-types';
-import ModalMessager from '../../../../components/Modal';
+import { Modal } from '../../../../components';
 
 
 const useStyles = makeStyles({
@@ -52,7 +53,7 @@ const ClinicList = (props) => {
 
   return(
     <Grid container>
-      <ModalMessager />
+      <Modal />
       {clinics.map( clinic => {
         return(
           <Grid item className={classes.root} md={3} key={clinic._id}>  
@@ -95,6 +96,5 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({list, auth2}, dispatch);
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicList);

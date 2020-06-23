@@ -9,7 +9,6 @@ import { patientReducer } from './patientReducer';
 import { schedulingReduce } from './schedulingReduce';
 import { secrataryReducer } from './secrataryReducer';
 
-
 const mainReducer = combineReducers({
     auth: authReducer,
     manager: managerReducer,

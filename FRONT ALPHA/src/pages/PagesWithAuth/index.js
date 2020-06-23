@@ -134,12 +134,6 @@ const Sino = () => {
   };
   
   const [menu, setMenu] = useState(true);
-  const menuManagerOpen = () => {
-    setMenu(true);
-  }
-  const menuManagerClose = () => {
-    setMenu(false);
-  }
 
   return (
     <div>
