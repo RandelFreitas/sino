@@ -22,7 +22,7 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
         case ACTIONS.LIST:
             return {...state, clinics: action.clinics.docs}
         case ACTIONS.BYID:
-            return {...state, clinicById: action.clinicById}
+            return {...state, clinicById: action.clinicById, loading: action.loading}
         case ACTIONS.ADD:
             return {...state, clinics: list}
         case ACTIONS.CLEAN:
@@ -51,6 +51,7 @@ export function getClinicById(id){
             dispatch({
                 type: ACTIONS.BYID,
                 clinicById: Response.data,
+                loading: true,
             })
         })
     }

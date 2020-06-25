@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 
-import { list } from '../../../../store/clinicReducer';
+import { list, getClinicById } from '../../../../store/clinicReducer';
 import { auth2 } from '../../../../store/authReducer';
 import { Modal } from '../../../../components';
 
@@ -81,7 +81,7 @@ const ClinicList = (props) => {
             </Card>
           </Grid>
         )})
-      }     
+      }
     </Grid>
   )
 }
@@ -95,6 +95,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({list, auth2}, dispatch);
+  bindActionCreators({list, auth2, getClinicById}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicList);

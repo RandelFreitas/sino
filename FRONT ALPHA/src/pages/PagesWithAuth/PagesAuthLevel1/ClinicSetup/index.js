@@ -84,170 +84,176 @@ const ClinicSetup = (props) => {
     setValue(newValue);
   };
 
-  const dataInit = {
-    name: '',
-    email: '',
-    cnpj: '',
-    phone: '',
-    address: {
-      state: '',
-      city: '',
-      district: '',
-      zip: '',
-      obs: ''
-    }
-  }
+  const [clinicById, setClinicById] = useState(props.clinicById);
+  const [loading, setLoading] = useState(false);
 
-  const [clinic, setClinic] = useState(dataInit);
-  const onChange = (event) => {
+  setTimeout(function(){setLoading(true);}, 3000);
+
+  useEffect(()=>{
+    setClinicById(props.clinicById);
+    },[props]
+  )
+  useEffect(()=>{
+    let idUrl = window.location.href;
+    idUrl = idUrl.split('/?');
+    idUrl = idUrl[1];
+    props.getClinicById(idUrl);
+  },[])
+  
+  const onChangeData = (event) => {
     const { name, value } = event.target;
-    setClinic({...clinic, [name]: value });
-    console.log(clinic);
+    setClinicById({...clinicById, [name]: value });
   }
 
-  const onSubmit = () => {
-    const newClinic = {
-      name: clinic.name,
-      email: clinic.email,
-      cnpj: clinic.cnpj,
-      phone: clinic.phone,
-      address: clinic.address
-    }
-    props.addClinic(newClinic);
+  const onSubmit = (event) => {
+    
   }
   
-  return (
-    <div>
-      <Paper className={classes.root}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary">
-          <Tab label="Perfil" />
-          <Tab label="Clinicas" />
-          <Tab label="Equipe" />
-        </Tabs>
-      </Paper>
-      <Divider/>
-        <Card className={classes.card}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image="/static/img/clinica01.png"
-              title="Contemplative Reptile"
-            />
-          </CardActionArea>
-          <CardActions>
-            <Button className={classes.center} size="small" color="primary">
-              Alterar Foto
-            </Button>
-          </CardActions>
-          <CardActions>
-            <Typography className={classes.center} variant='h5'>
-              
-            </Typography>
-          </CardActions>
-        </Card>
-      <Divider/>
-
-      <Card className={classes.card}>
-          <p style={{margin: 10}}>Dados</p>
-          <div className={classes.data}>
-            <TextField className={classes.middle}
-              label="Nome:"
-              name="name"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.middle}
-              label="Email:"
-              name="email"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-          </div>
-          <div>
-            <TextField className={classes.middle}
-              label="CNPJ:"
-              name="cnpj"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
+  let content;
+  if(loading){
+    content = (
+      <div>
+        <Paper className={classes.root}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary">
+            <Tab label="Perfil" />
+            <Tab label="Clinicas" />
+            <Tab label="Equipe" />
+          </Tabs>
+        </Paper>
+        <Divider/>
+          <Card className={classes.card}>
+            <CardActionArea>
+              <CardMedia
+                className={classes.media}
+                image="/static/img/clinica01.png"
+                title="Contemplative Reptile"
               />
-          </div>
-          <Divider/>
-          <div>
-            <p style={{margin: 10}}>Endereço</p>
-            <TextField className={classes.zip}
-              label="Cep:"
-              name="zip"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.street}
-              label="Rua:"
-              name="street"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.district}
-              label="Barro:"
-              name="district"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.city}
-              label="Cidade:"
-              name="city"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.state}
-              label="Estado:"
-              name="state"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.number}
-              label="Número:"
-              name="number"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.middle}
-              label="Tipo:"
-              name="type"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-            <TextField className={classes.middle}
-              label="Complemento:"
-              name="obs"
-              onChange={onChange}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-          </div>
-          <Divider/>
-          <Button onClick={onSubmit} className={classes.button} variant="contained" color="primary">
-            Salvar
-          </Button>
-          <Link  to={'/app'}>
-            <Button className={classes.button} variant="outlined" color="primary">
-              Cancelar
+            </CardActionArea>
+            <CardActions>
+              <Button className={classes.center} size="small" color="primary">
+                Alterar Foto
+              </Button>
+            </CardActions>
+            <CardActions>
+              <Typography className={classes.center} variant='h5'>
+                
+              </Typography>
+            </CardActions>
+          </Card>
+        <Divider/>
+
+        <Card className={classes.card}>
+            <p style={{margin: 10}}>Dados</p>
+            <div className={classes.data}>
+              <TextField className={classes.middle}
+                label="Nome:"
+                name="name"
+                value={clinicById.name}
+                onChange={onChangeData}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.middle}
+                label="Email:"
+                name="email"
+                value={clinicById.email}
+                onChange={onChangeData}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+            </div>
+            <div>
+              <TextField className={classes.middle}
+                label="CNPJ:"
+                name="cnpj"
+                value={clinicById.cnpj}
+                onChange={onChangeData}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                />
+            </div>
+            <Divider/>
+            <div>
+              <p style={{margin: 10}}>Endereço</p>
+              <TextField className={classes.zip}
+                label="Cep:"
+                name="zip"
+                value={clinicById.address.zip}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.street}
+                label="Rua:"
+                name="street"
+                value={clinicById.address.street}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.district}
+                label="Barro:"
+                name="district"
+                value={clinicById.address.district}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.city}
+                label="Cidade:"
+                name="city"
+                value={clinicById.address.city}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.state}
+                label="Estado:"
+                name="state"
+                value={clinicById.address.state}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.number}
+                label="Número:"
+                name="number"
+                value={clinicById.address.number}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.middle}
+                label="Tipo:"
+                name="type"
+                value={clinicById.address.type}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+              <TextField className={classes.middle}
+                label="Complemento:"
+                name="obs"
+                value={clinicById.address.obs}
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+              />
+            </div>
+            <Divider/>
+            <Button onClick={onSubmit} className={classes.button} variant="contained" color="primary">
+              Salvar
             </Button>
-          </Link>
-      </Card>
+            <Link  to={'/app'}>
+              <Button className={classes.button} variant="outlined" color="primary">
+                Cancelar
+              </Button>
+            </Link>
+        </Card>
+      </div>
+    )
+  }else{
+    content = "Carregando..."
+  }
+  return(
+    <div>
+      {content}
     </div>
   )
 }
@@ -258,7 +264,6 @@ ClinicSetup.prototypes = {
 
 const mapStateToProps = state => ({
   clinicById: state.clinic.clinicById,
-  loading: state.clinic.loading
 });
 
 const mapDispatchToProps = dispatch =>
