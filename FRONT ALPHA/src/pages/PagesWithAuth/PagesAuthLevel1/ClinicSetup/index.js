@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import NumberFormat from 'react-number-format';
+
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -13,11 +15,8 @@ import { Divider,
   CardActionArea,
   CardActions,
   CardMedia,
-  Typography,
-  Tab,
-  Paper,
-  Tabs } from '@material-ui/core';
-import { addClinic, getClinicById } from '../../../../store/clinicReducer';
+  Typography } from '@material-ui/core';
+import { addClinic, getClinicById, updateClinic, cleanClinic } from '../../../../store/clinicReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,99 +78,120 @@ const useStyles = makeStyles((theme) => ({
 
 const ClinicSetup = (props) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+
+  const { clinicById } = props;
+
+  const defaultFormShape = {
+    address: {
+      state: '',
+      city: '',
+      street: '',
+      number: '',
+      type: '',
+      district: '',
+      zip: '',
+      obs: ''
+    },
+    name: '',
+    email: '',
+    cnpj: '',
+    phone: '',
   };
 
-  const [clinicById, setClinicById] = useState(props.clinicById);
-  const [loading, setLoading] = useState(false);
-
-  setTimeout(function(){setLoading(true);}, 3000);
-
-  useEffect(()=>{
-    setClinicById(props.clinicById);
-    },[props]
-  )
   useEffect(()=>{
     let idUrl = window.location.href;
     idUrl = idUrl.split('/?');
     idUrl = idUrl[1];
-    props.getClinicById(idUrl);
+    if(idUrl){
+      props.getClinicById(idUrl);
+    }else{
+      props.cleanClinic();
+    }
   },[])
   
-  const onChangeData = (event) => {
-    const { name, value } = event.target;
-    setClinicById({...clinicById, [name]: value });
-  }
+  const formik = useFormik ({
+    initialValues: (clinicById._id? clinicById : defaultFormShape),
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required('Nome obrigatório!'),
+      address: Yup.object({
+        zip: Yup.string()
+          .required('Cep obrigatorio!'),
+      }),
+    }),
+      onSubmit: values => {
+        props.updateClinic(values);
+      },
+  });
 
-  const onSubmit = (event) => {
-    
-  }
-  
-  let content;
-  if(loading){
-    content = (
-      <div>
-        <Paper className={classes.root}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary">
-            <Tab label="Perfil" />
-            <Tab label="Clinicas" />
-            <Tab label="Equipe" />
-          </Tabs>
-        </Paper>
-        <Divider/>
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image="/static/img/clinica01.png"
-                title="Contemplative Reptile"
-              />
-            </CardActionArea>
-            <CardActions>
-              <Button className={classes.center} size="small" color="primary">
-                Alterar Foto
-              </Button>
-            </CardActions>
-            <CardActions>
-              <Typography className={classes.center} variant='h5'>
-                
-              </Typography>
-            </CardActions>
-          </Card>
-        <Divider/>
+  return (
+    <div>
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image="/static/img/clinica01.png"
+            title="Contemplative Reptile"
+          />
+        </CardActionArea>
+        <CardActions>
+          <Button className={classes.center} size="small" color="primary">
+            Alterar Foto
+          </Button>
+        </CardActions>
+        <CardActions>
+          <Typography className={classes.center} variant='h5'>
+            
+          </Typography>
+        </CardActions>
+      </Card>
+      <Divider/>
 
+      <form onSubmit={formik.handleSubmit}>
         <Card className={classes.card}>
             <p style={{margin: 10}}>Dados</p>
             <div className={classes.data}>
               <TextField className={classes.middle}
+                variant="outlined"
                 label="Nome:"
                 name="name"
-                value={clinicById.name}
-                onChange={onChangeData}
                 InputLabelProps={{ shrink: true }}
-                variant="outlined"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
               />
+              <div>
+                {formik.touched.name && formik.errors.name ? (
+                  <Typography className={classes.error}>{formik.errors.name}</Typography>
+                ) : null}
+              </div>
               <TextField className={classes.middle}
+                variant="outlined"
                 label="Email:"
                 name="email"
-                value={clinicById.email}
-                onChange={onChangeData}
                 InputLabelProps={{ shrink: true }}
-                variant="outlined"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.address.zip}
               />
+              <div>
+                {formik.touched.zip && formik.errors.zip ? (
+                  <Typography className={classes.error}>{formik.errors.address.zip}</Typography>
+                ) : null}
+              </div>
             </div>
             <div>
               <TextField className={classes.middle}
                 label="CNPJ:"
                 name="cnpj"
-                value={clinicById.cnpj}
-                onChange={onChangeData}
+                
+                InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                />
+              <TextField className={classes.middle}
+                label="Telefone:"
+                name="phone"
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
                 />
@@ -182,62 +202,62 @@ const ClinicSetup = (props) => {
               <TextField className={classes.zip}
                 label="Cep:"
                 name="zip"
-                value={clinicById.address.zip}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.street}
                 label="Rua:"
                 name="street"
-                value={clinicById.address.street}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.district}
                 label="Barro:"
                 name="district"
-                value={clinicById.address.district}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.city}
                 label="Cidade:"
                 name="city"
-                value={clinicById.address.city}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.state}
                 label="Estado:"
                 name="state"
-                value={clinicById.address.state}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.number}
                 label="Número:"
                 name="number"
-                value={clinicById.address.number}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.middle}
                 label="Tipo:"
                 name="type"
-                value={clinicById.address.type}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
               <TextField className={classes.middle}
                 label="Complemento:"
                 name="obs"
-                value={clinicById.address.obs}
+                
                 InputLabelProps={{ shrink: true }}
                 variant="outlined"
               />
             </div>
             <Divider/>
-            <Button onClick={onSubmit} className={classes.button} variant="contained" color="primary">
+            <Button type="submit" className={classes.button} variant="contained" color="primary">
               Salvar
             </Button>
             <Link  to={'/app'}>
@@ -246,14 +266,7 @@ const ClinicSetup = (props) => {
               </Button>
             </Link>
         </Card>
-      </div>
-    )
-  }else{
-    content = "Carregando..."
-  }
-  return(
-    <div>
-      {content}
+      </form>
     </div>
   )
 }
@@ -267,7 +280,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addClinic, getClinicById }, dispatch);
+  bindActionCreators({ addClinic, getClinicById, updateClinic, cleanClinic }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicSetup);
 

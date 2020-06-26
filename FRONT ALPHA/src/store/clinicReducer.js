@@ -10,9 +10,27 @@ const ACTIONS = {
     UPDATE: 'CLINIC_UPDATE',
 }
 
+const clinic ={
+    address: {
+        state: '',
+        city: '',
+        street: '',
+        number: '',
+        type: '',
+        district: '',
+        zip: '',
+        obs: ''
+    },
+    _id: '',
+    name: '',
+    email: '',
+    cnpj: '',
+    phone: '',
+}
+
 const ESTADO_INICIAL = {
     clinics: [],
-    clinicById: [],
+    clinicById: clinic,
     loading: false,
 }
 
@@ -25,8 +43,10 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
             return {...state, clinicById: action.clinicById, loading: action.loading}
         case ACTIONS.ADD:
             return {...state, clinics: list}
+        case ACTIONS.UPDATE:
+            return {...state, clinics: list}
         case ACTIONS.CLEAN:
-            return {...state, clinicById: action.clinicById}
+            return {...state, clinicById: clinic}
         default:
             return state;
     }
@@ -69,10 +89,20 @@ export function addClinic(clinic){
     }
 }
 
+export function updateClinic(clinic){
+    return dispatch => {
+        api.post(`/level1/clinics/${clinic._id}`, clinic)
+        .then(Response => {
+            dispatch({
+                type: ACTIONS.UPDATE,
+                clinic: Response.data
+            }, history.push('/app'))
+        })
+    }
+}
+
 export function cleanClinic(){
-    console.log("ok");
     return {
         type: ACTIONS.CLEAN,
-        clinicById: []
     }
 }
