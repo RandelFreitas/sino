@@ -84,20 +84,20 @@ export function addClinic(clinic){
             dispatch({
                 type: ACTIONS.ADD,
                 clinic: Response.data
-            }, history.push('/app'))
-        })
+            })
+        }, history.push('/app'))
     }
 }
 
-export function updateClinic(clinic){
+export function updateClinic(clinic, id){
     return dispatch => {
-        api.post(`/level1/clinics/${clinic._id}`, clinic)
+        api.put(`/level1/clinics/${id}`, clinic)
         .then(Response => {
             dispatch({
                 type: ACTIONS.UPDATE,
                 clinic: Response.data
-            }, history.push('/app'))
-        })
+            })
+        }, history.push('/app'))
     }
 }
 

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 
-import { useFormik } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -80,7 +80,6 @@ const ClinicSetup = (props) => {
   const classes = useStyles();
 
   const { clinicById } = props;
-
   const defaultFormShape = {
     address: {
       state: '',
@@ -108,21 +107,6 @@ const ClinicSetup = (props) => {
       props.cleanClinic();
     }
   },[])
-  
-  const formik = useFormik ({
-    initialValues: (clinicById._id? clinicById : defaultFormShape),
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .required('Nome obrigatório!'),
-      address: Yup.object({
-        zip: Yup.string()
-          .required('Cep obrigatorio!'),
-      }),
-    }),
-      onSubmit: values => {
-        props.updateClinic(values);
-      },
-  });
 
   return (
     <div>
@@ -147,8 +131,34 @@ const ClinicSetup = (props) => {
       </Card>
       <Divider/>
 
-      <form onSubmit={formik.handleSubmit}>
-        <Card className={classes.card}>
+      <Formik 
+        initialValues= {clinicById._id? clinicById : defaultFormShape}
+        enableReinitialize
+
+        validationSchema={Yup.object({
+          name: Yup.string()
+            .required('Nome obrigatório!'),
+          address: Yup.object({
+            zip: Yup.string()
+              .required('Cep obrigatorio!'),
+          }),
+        })}
+
+        onSubmit={(values) => {
+          if(clinicById._id){
+            const { name, email, cnpj, phone } = values;
+            const { state, city, street, number, type, district, zip, obs } = values.address;
+            const address = {state, city, street, number, type, district, zip, obs};
+            const clinicUpdate = { name, email, cnpj, phone, address };
+            props.updateClinic(clinicUpdate, clinicById._id);
+          }else{
+            props.addClinic(values);
+          }
+        }} 
+      >
+        {formik => (
+          <form onSubmit={formik.handleSubmit}>
+          <Card className={classes.card}>
             <p style={{margin: 10}}>Dados</p>
             <div className={classes.data}>
               <TextField className={classes.middle}
@@ -156,9 +166,7 @@ const ClinicSetup = (props) => {
                 label="Nome:"
                 name="name"
                 InputLabelProps={{ shrink: true }}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
+                {...formik.getFieldProps('name')}
               />
               <div>
                 {formik.touched.name && formik.errors.name ? (
@@ -167,109 +175,29 @@ const ClinicSetup = (props) => {
               </div>
               <TextField className={classes.middle}
                 variant="outlined"
-                label="Email:"
-                name="email"
+                label="Cep:"
+                name="address.zip"
                 InputLabelProps={{ shrink: true }}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.address.zip}
+                {...formik.getFieldProps('address.zip')}
               />
               <div>
-                {formik.touched.zip && formik.errors.zip ? (
+                {formik.touched.address && formik.errors.address ? (
                   <Typography className={classes.error}>{formik.errors.address.zip}</Typography>
                 ) : null}
               </div>
-            </div>
-            <div>
-              <TextField className={classes.middle}
-                label="CNPJ:"
-                name="cnpj"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-                />
-              <TextField className={classes.middle}
-                label="Telefone:"
-                name="phone"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-                />
-            </div>
-            <Divider/>
-            <div>
-              <p style={{margin: 10}}>Endereço</p>
-              <TextField className={classes.zip}
-                label="Cep:"
-                name="zip"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.street}
-                label="Rua:"
-                name="street"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.district}
-                label="Barro:"
-                name="district"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.city}
-                label="Cidade:"
-                name="city"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.state}
-                label="Estado:"
-                name="state"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.number}
-                label="Número:"
-                name="number"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.middle}
-                label="Tipo:"
-                name="type"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-              <TextField className={classes.middle}
-                label="Complemento:"
-                name="obs"
-                
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-              />
-            </div>
-            <Divider/>
-            <Button type="submit" className={classes.button} variant="contained" color="primary">
-              Salvar
-            </Button>
-            <Link  to={'/app'}>
-              <Button className={classes.button} variant="outlined" color="primary">
-                Cancelar
+              <Divider/>
+              <Button type="submit" className={classes.button} variant="contained" color="primary">
+                Salvar
               </Button>
-            </Link>
-        </Card>
-      </form>
+            </div>
+          </Card>
+        </form>
+        )}
+      </Formik>
     </div>
   )
 }
+
 
 ClinicSetup.prototypes = {
   clinicById: PropTypes.array.isRequired
