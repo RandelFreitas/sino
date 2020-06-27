@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
@@ -12,7 +12,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import CardActions from '@material-ui/core/CardActions';
+import Pagination from '@material-ui/lab/Pagination';
 
 import { list } from '../../../../store/clinicReducer';
 import { auth2 } from '../../../../store/authReducer';
@@ -42,20 +44,35 @@ const useStyles = makeStyles({
 });
 
 const ClinicList = (props) => {
-  const { clinics } = props;
-
-  useEffect(() => {
-    props.list();
-    console.log('entrou')
-  },[5]);
-
   const classes = useStyles();
   let match = useRouteMatch();
+  
+  const clinicInit = {
+    name: '',
+    address: {
+      city: '',
+    },
+  };
+  
+  const { clinics, infos } = props;
+  const [page, setPage] = useState(1);
+  const nOfPages = infos.pages;
+  const [ clinicArray, setClinicArray ] = useState(clinicInit);
+
+  useEffect(() => {
+    console.log('entrou');
+    props.list(page);
+    setClinicArray(clinics)
+  },[page]);
+  
+  const handleChange=(event, value)=>{
+    setPage(value);
+  }
 
   return(
     <Grid container>
       <Modal />
-      {clinics.map( clinic => {
+      {clinicArray.map( clinic => {
         return(
           <Grid item className={classes.root} md={3} key={clinic._id}>  
             <Card>
@@ -83,6 +100,19 @@ const ClinicList = (props) => {
           </Grid>
         )})
       }
+      <Box component="span">
+        <Pagination
+          count={nOfPages}
+          page={page}
+          onChange={handleChange}
+          defaultPage={1}
+          color="primary"
+          size="large"
+          showFirstButton
+          showLastButton
+          classes={{ ul: classes.paginator }}
+        />
+      </Box>
     </Grid>
   )
 }
@@ -92,7 +122,8 @@ ClinicList.prototypes = {
 };
 
 const mapStateToProps = state => ({
-  clinics: state.clinic.clinics
+  clinics: state.clinic.clinics,
+  infos: state.clinic.infos,
 });
 
 const mapDispatchToProps = dispatch =>

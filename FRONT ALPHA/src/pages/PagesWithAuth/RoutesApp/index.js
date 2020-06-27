@@ -9,10 +9,10 @@ const RoutesLevel1 = () => {
   
   return (
     <Switch>
-      <Route path={`${match.url}/clinicSetup`} component={ClinicSetup}/>
-      <Route path={`${match.url}/menuSetup`} component={ManagerSetup}/>
-      <Route path={`${match.url}/clinic`} component={Clinic}/>
-      <Route path={`${match.url}/`} component={ClinicList}/>
+      <Route path={`${match.url}/clinics/clinicSetup`} component={ClinicSetup}/>
+      <Route path={`${match.url}/clinics/menuSetup`} component={ManagerSetup}/>
+      <Route path={`${match.url}/clinics/clinic`} component={Clinic}/>
+      <Route path={`${match.url}/clinics`} component={ClinicList}/>
     </Switch>
   )
 }

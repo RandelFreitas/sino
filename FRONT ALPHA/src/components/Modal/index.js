@@ -94,7 +94,7 @@ const ModalMessager = () => {
                 <FormControlLabel onClick={()=>acceptOk()} control={<Checkbox value="accept" color="primary" />} label="Estou ciente"/>
               </CardContent>
               <CardActions>
-                <Link className={clsx(classes.link, accept && classes.linkDesabled )} to={`${match.url}/clinicSetup`} disabled>
+                <Link className={clsx(classes.link, accept && classes.linkDesabled )} to={`${match.url}/clinics/clinicSetup`} disabled>
                     ACEITAR
                 </Link>
               </CardActions>

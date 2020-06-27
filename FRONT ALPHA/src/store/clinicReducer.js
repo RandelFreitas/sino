@@ -13,6 +13,7 @@ const ACTIONS = {
 const ESTADO_INICIAL = {
     clinics: [],
     clinicById: [],
+    infos: [],
     loading: false,
 }
 
@@ -20,7 +21,7 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
     const list = [...state.clinics, action.clinic];
     switch(action.type){
         case ACTIONS.LIST:
-            return {...state, clinics: action.clinics.docs}
+            return {...state, clinics: action.clinics, infos: action.infos}
         case ACTIONS.BYID:
             return {...state, clinicById: action.clinicById, loading: action.loading}
         case ACTIONS.ADD:
@@ -34,13 +35,15 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
     }
 }
 
-export function list(){
+export function list(page){
     return dispatch => {
-        api.get('/level1/clinics')
+        api.get(`/level1/clinics?page=${page}`)
         .then(Response => {
+            const { docs, ...infos } = Response.data;
             dispatch({
                 type: ACTIONS.LIST,
-                clinics: Response.data,
+                clinics: docs,
+                infos: infos,
             })
         })
     }

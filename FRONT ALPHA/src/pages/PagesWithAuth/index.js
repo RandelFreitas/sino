@@ -150,7 +150,7 @@ const Sino = () => {
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              <Link className={classes.link} to={`${match.url}`}>
+              <Link className={classes.link} to={`${match.url}/clinics`}>
                 Sino
               </Link>
             </Typography>
@@ -164,7 +164,7 @@ const Sino = () => {
               </Badge>
             </IconButton>
             <IconButton color="inherit">
-              <Link className={classes.link} to={`${match.url}/menuSetup`}>
+              <Link className={classes.link} to={`${match.url}/clinics/menuSetup`}>
                 <SettingsIcon />
               </Link>
             </IconButton>

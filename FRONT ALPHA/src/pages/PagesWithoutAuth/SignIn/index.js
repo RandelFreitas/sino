@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import ReCAPTCHA from "react-google-recaptcha"
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -42,11 +43,13 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = (props) => {
   const classes = useStyles();
+  
+  const [disableSubmit,setDisableSubmit] = useState(true);
 
   const formik = useFormik ({
     initialValues: {
       email: '',
-      password: '' 
+      password: '',
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -95,7 +98,6 @@ const SignIn = (props) => {
               name="password"
               margin="normal"
               fullWidth
-              name="password"
               label="Senha"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -106,7 +108,8 @@ const SignIn = (props) => {
                 <Typography className={classes.error}>{formik.errors.password}</Typography>
               ) : null}
             </div>
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+            <ReCAPTCHA sitekey="6Lf2OKoZAAAAADMySEr-aZsfTDc1bc3bXjqHVlig" onChange={useCallback(() => setDisableSubmit(false))} />
+            <Button type="submit" disabled={disableSubmit} fullWidth variant="contained" color="primary" className={classes.submit} onBlur={formik.handleBlur}>
               Entrar
             </Button>
             <Grid container>

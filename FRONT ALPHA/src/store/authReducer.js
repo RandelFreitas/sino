@@ -32,7 +32,7 @@ export function auth1(login){
                     manager: Response.data.token,
                },
                 setTokenLocalStorage(Response.data.token), 
-                history.push('/app')
+                history.push(`/app/clinics?page=1`)
             );
         });
     }
@@ -47,7 +47,7 @@ export function auth2(id){
                 token: Response.data.token,
             },
                 setTokenLocalStorage(Response.data.token), 
-                history.push('/app/clinic')
+                history.push('/app/clinics/clinic')
             )
         })
     }
