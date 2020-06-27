@@ -46,7 +46,8 @@ const ClinicList = (props) => {
 
   useEffect(() => {
     props.list();
-  },[]);
+    console.log('entrou')
+  },[5]);
 
   const classes = useStyles();
   let match = useRouteMatch();

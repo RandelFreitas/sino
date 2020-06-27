@@ -10,27 +10,9 @@ const ACTIONS = {
     UPDATE: 'CLINIC_UPDATE',
 }
 
-const clinic ={
-    address: {
-        state: '',
-        city: '',
-        street: '',
-        number: '',
-        type: '',
-        district: '',
-        zip: '',
-        obs: ''
-    },
-    _id: '',
-    name: '',
-    email: '',
-    cnpj: '',
-    phone: '',
-}
-
 const ESTADO_INICIAL = {
     clinics: [],
-    clinicById: clinic,
+    clinicById: [],
     loading: false,
 }
 
@@ -44,9 +26,9 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
         case ACTIONS.ADD:
             return {...state, clinics: list}
         case ACTIONS.UPDATE:
-            return {...state, clinics: list}
+            return state;
         case ACTIONS.CLEAN:
-            return {...state, clinicById: clinic}
+            return {...state, clinicById: []}
         default:
             return state;
     }
@@ -95,7 +77,7 @@ export function updateClinic(clinic, id){
         .then(Response => {
             dispatch({
                 type: ACTIONS.UPDATE,
-                clinic: Response.data
+                //clinic: Response.data
             })
         }, history.push('/app'))
     }
