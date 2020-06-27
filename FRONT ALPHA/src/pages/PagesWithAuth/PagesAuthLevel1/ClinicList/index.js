@@ -47,23 +47,14 @@ const ClinicList = (props) => {
   const classes = useStyles();
   let match = useRouteMatch();
   
-  const clinicInit = {
-    name: '',
-    address: {
-      city: '',
-    },
-  };
-  
   const { clinics, infos } = props;
   const [page, setPage] = useState(1);
   const nOfPages = infos.pages;
-  const [ clinicArray, setClinicArray ] = useState(clinicInit);
 
   useEffect(() => {
     console.log('entrou');
     props.list(page);
-    setClinicArray(clinics)
-  },[page]);
+  },[]);
   
   const handleChange=(event, value)=>{
     setPage(value);
@@ -72,7 +63,7 @@ const ClinicList = (props) => {
   return(
     <Grid container>
       <Modal />
-      {clinicArray.map( clinic => {
+      {clinics.map( clinic => {
         return(
           <Grid item className={classes.root} md={3} key={clinic._id}>  
             <Card>
