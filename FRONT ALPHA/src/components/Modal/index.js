@@ -33,10 +33,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
     padding: 10,
   },
-  linkDesabled:{
-    color: 'gray',
-    pointerEvents: 'none'
-  },
   button: {
     width: '100%',
     marginLeft: 50,
@@ -59,11 +55,6 @@ const ModalMessager = () => {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const [accept, setAccept] = useState(true);
-  const acceptOk = () => {
-    setAccept(false);
   };
 
   const modal =(
@@ -91,10 +82,10 @@ const ModalMessager = () => {
                     </p>
                   </Typography>
                 </div><br/>
-                <FormControlLabel onClick={()=>acceptOk()} control={<Checkbox value="accept" color="primary" />} label="Estou ciente"/>
+                <FormControlLabel control={<Checkbox value="accept" color="primary" />} label="Estou ciente"/>
               </CardContent>
               <CardActions>
-                <Link className={clsx(classes.link, accept && classes.linkDesabled )} to={`${match.url}/clinics/clinicSetup`} disabled>
+                <Link className={classes.link} to={`${match.url}/clinicSetup`}>
                     ACEITAR
                 </Link>
               </CardActions>

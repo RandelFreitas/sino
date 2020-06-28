@@ -187,7 +187,7 @@ const ClinicSetup = (props) => {
               </div>
               <Divider/>
               <Button type="submit" className={classes.button} variant="contained" color="primary">
-                Salvar
+                {clinicById._id? 'Atualizar': 'Salvar'}
               </Button>
             </div>
           </Card>
