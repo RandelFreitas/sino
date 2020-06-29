@@ -107,12 +107,6 @@ const ClinicList = (props) => {
               count={nOfPages}
               page={page}
               onChange={handleChange}
-              defaultPage={page}
-              color="primary"
-              size="large"
-              showFirstButton
-              showLastButton
-              classes={{ ul: classes.paginator }}
             />
           </Box>
         </Grid>
