@@ -1,20 +1,25 @@
 import { combineReducers } from 'redux';
+
+import { authReducer } from './authReducer';
+import { managerReducer } from './managerReducer';
 import { clinicReducer } from './clinicReducer';
 import { dentistReducer } from './dentistReducer';
 import { financesReducer } from './financesReducer';
-import { managerReducer } from './managerReducer';
 import { patientReducer } from './patientReducer';
-import { scheduleReduce } from './scheduleReduce';
+import { schedulingReduce } from './schedulingReduce';
 import { secrataryReducer } from './secrataryReducer';
+import { messageReducer } from './messageReducer';
 
 const mainReducer = combineReducers({
+    auth: authReducer,
+    manager: managerReducer,
     clinic: clinicReducer,
     dentist: dentistReducer,
     finances: financesReducer,
-    manager: managerReducer,
     patient: patientReducer,
-    schedule: scheduleReduce,
-    secretary: secrataryReducer
+    scheduling: schedulingReduce,
+    secretary: secrataryReducer,
+    message: messageReducer,
 });
 
 export default mainReducer;

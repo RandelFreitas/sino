@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, Router } from "react-router-dom";
+
+import Menu from "./pages/PagesWithAuth";
+import history from './services/history';
 
 import { isAuthenticated } from "./services/auth";
-import { SignUp, SignIn } from "./pages";
-import Sino from "./pages/App";
-//import RoutesLevel from "./pages/App/RoutesLevel";
-//import { RouteWithLayout } from "./components";
+import { SignUp, SignIn, NotFound, ForgotPassword } from "./pages/PagesWithoutAuth";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -21,13 +21,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 const Routes = () => (
-  <BrowserRouter>
+  <Router history={history}>
     <Switch>
         <Route exact path="/" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
-        <PrivateRoute path="/app" component={Sino}/>
+        <Route exact path="/not-found" component={NotFound} />
+        <Route exact path="/forgot-password" component={ForgotPassword} />
+        <PrivateRoute path="/app" component={Menu}/>
+        <Redirect to="/not-found" />
     </Switch>
-  </BrowserRouter>
+  </Router>
 );
 
 export default Routes;

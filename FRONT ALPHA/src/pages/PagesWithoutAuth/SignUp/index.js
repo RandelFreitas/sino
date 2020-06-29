@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import api from "../../services/api";
+import api from "../../../services/api";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -80,7 +80,6 @@ const SignUp = props => {
       setErro("Preencha todos os dados para se cadastrar")
     } else{
       try{
-        //console.log(adm);
         await api.post("/public/managers", adm);
         history.push("/");
       }catch (err) {
@@ -112,6 +111,7 @@ const SignUp = props => {
                 variant="outlined"
                 required
                 fullWidth
+                value={adm.address.street}
                 id="name"
                 label="Nome"
                 autoFocus
