@@ -8,6 +8,7 @@ import { financesReducer } from './financesReducer';
 import { patientReducer } from './patientReducer';
 import { schedulingReduce } from './schedulingReduce';
 import { secrataryReducer } from './secrataryReducer';
+import { messageReducer } from './messageReducer';
 
 const mainReducer = combineReducers({
     auth: authReducer,
@@ -17,7 +18,8 @@ const mainReducer = combineReducers({
     finances: financesReducer,
     patient: patientReducer,
     scheduling: schedulingReduce,
-    secretary: secrataryReducer
+    secretary: secrataryReducer,
+    message: messageReducer,
 });
 
 export default mainReducer;

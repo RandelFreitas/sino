@@ -17,94 +17,119 @@ import CardActions from '@material-ui/core/CardActions';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { list } from '../../../../store/clinicReducer';
-import { auth2 } from '../../../../store/authReducer';
-import { Modal } from '../../../../components';
+import { AlertDialog } from '../../../../components/';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) =>({
   root: {
-    maxWidth: 300,
-    maxHeight: 300,
-    margin: 50,
+    flexGrow: 1,
+  },
+  item: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
   },
   media: {
     height: 140,
   },
   button: {
-    width: '100%',
-    marginLeft: 50,
+    justifyContent: 'center'
   },
-  maxCaracter: {
-    maxLength: 10,
+  pagination: {
+    margin: 20,
+    justifyContent: 'center'
   },
-  link: {
-    textDecoration: 'none',
-    color: 'white'
-  },
-});
+  dialog: {
+    margin: (0, 8),
+  }
+
+}));
 
 const ClinicList = (props) => {
   const classes = useStyles();
-  let match = useRouteMatch();
+  const match = useRouteMatch();
   
   const { clinics, infos } = props;
-  const [page, setPage] = useState(1);
   const nOfPages = infos.pages;
+  const [page, setPage] = useState(window.location.href.split('page=')[1]);
 
   useEffect(() => {
-    console.log('entrou');
     props.list(page);
-  },[]);
+  },[page]);
   
   const handleChange=(event, value)=>{
     setPage(value);
   }
 
-  return(
-    <Grid container>
-      <Modal />
+  const mapClinic = (
+    <React.Fragment>
       {clinics.map( clinic => {
-        return(
-          <Grid item className={classes.root} md={3} key={clinic._id}>  
-            <Card>
-              <CardActionArea>
-                <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {clinic.name}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {clinic.address.city}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              
-              <CardActions>
-                <Button variant="contained" color="primary">
-                  <a onClick={ () => props.auth2(clinic._id)}> Gerenciar </a>
-                </Button>
-                <Button variant="contained" color="primary">
-                  <Link className={classes.link} to={`${match.url}/clinicSetup/?${clinic._id}`}> Configurações </Link>
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        )})
-      }
-      <Box component="span">
-        <Pagination
-          count={nOfPages}
-          page={page}
-          onChange={handleChange}
-          defaultPage={1}
-          color="primary"
-          size="large"
-          showFirstButton
-          showLastButton
-          classes={{ ul: classes.paginator }}
-        />
-      </Box>
-    </Grid>
+          return(
+            <Grid item md={4} sm={6} xs={12}>
+              <div key={clinic._id} className={classes.item}>  
+                <Card>
+                  <CardActionArea>
+                    <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
+                    <CardContent>
+                      <Typography noWrap variant="h5" component="h2">
+                        {clinic.name}
+                      </Typography>
+                      <Typography noWrap variant="body2" color="textSecondary" component="p">
+                        {clinic.address.city} - {clinic.address.state}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions className={classes.button}>
+                    <Button component={Link} to={`${match.url}/clinic/?${clinic._id}`} variant="contained" color="primary">
+                      Gerenciar
+                    </Button>
+                    <Button component={Link} to={`${match.url}/clinicSetup/?${clinic._id}`} variant="contained" color="primary">
+                      Configurações
+                    </Button>
+                  </CardActions>
+                </Card>
+              </div>
+            </Grid>
+          )})
+        }
+    </React.Fragment>
+  )
+
+  return(
+    <div className={classes.root}>
+      <Grid container spacing={1}>
+        <Grid className={classes.dialog} container item xs={12} spacing={3}>
+          <AlertDialog />
+        </Grid>
+        <Grid container item className={classes.pagination} xs={12} spacing={3}>
+          <Box component="span">
+            <Pagination
+              count={nOfPages}
+              page={page}
+              onChange={handleChange}
+              defaultPage={page}
+              color="primary"
+              size="large"
+              showFirstButton
+              showLastButton
+              classes={{ ul: classes.paginator }}
+            />
+          </Box>
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          {mapClinic}
+        </Grid>
+        <Grid className={classes.pagination} container item xs={12} spacing={3}>
+          <Box component="span">
+            <Pagination
+              count={nOfPages}
+              page={page}
+              onChange={handleChange}
+            />
+          </Box>
+        </Grid>
+      </Grid>
+    </div>
   )
 }
 
@@ -118,6 +143,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({list, auth2}, dispatch);
+  bindActionCreators({list}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClinicList);

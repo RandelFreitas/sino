@@ -1,6 +1,6 @@
 import api from '../services/api';
 import history from '../services/history';
-import { setTokenLocalStorage } from '../services/auth';
+import { setTokenLocalStorage, logoutApp } from '../services/auth';
 
 const ACTIONS = {
     AUTH1: 'AUTH_LEVEL1',
@@ -46,9 +46,13 @@ export function auth2(id){
                 type: ACTIONS.AUTH2,
                 token: Response.data.token,
             },
-                setTokenLocalStorage(Response.data.token), 
-                history.push('/app/clinics/clinic')
+             setTokenLocalStorage(Response.data.token)
             )
         })
     }
+}
+
+export function logout(){
+    logoutApp();
+    history.push(`/`);
 }

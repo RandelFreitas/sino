@@ -5,6 +5,6 @@ export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const setTokenLocalStorage = token => {
   localStorage.setItem(TOKEN_KEY, token);
 };
-export const logout = () => {
+export const logoutApp = () => {
   localStorage.removeItem(TOKEN_KEY);
 };

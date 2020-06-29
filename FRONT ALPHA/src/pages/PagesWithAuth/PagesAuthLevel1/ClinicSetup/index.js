@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -78,8 +78,10 @@ const useStyles = makeStyles((theme) => ({
 
 const ClinicSetup = (props) => {
   const classes = useStyles();
-
+  let match = useRouteMatch();
   const { clinicById } = props;
+
+  const [idUrl, setIdUrl] = useState(window.location.href.split('/?')[1]);
   const defaultFormShape = {
     address: {
       state: '',
@@ -98,9 +100,6 @@ const ClinicSetup = (props) => {
   };
 
   useEffect(()=>{
-    let idUrl = window.location.href;
-    idUrl = idUrl.split('/?');
-    idUrl = idUrl[1];
     if(idUrl){
       props.getClinicById(idUrl);
     }else{
@@ -122,11 +121,6 @@ const ClinicSetup = (props) => {
           <Button className={classes.center} size="small" color="primary">
             Alterar Foto
           </Button>
-        </CardActions>
-        <CardActions>
-          <Typography className={classes.center} variant='h5'>
-            
-          </Typography>
         </CardActions>
       </Card>
       <Divider/>
@@ -189,6 +183,9 @@ const ClinicSetup = (props) => {
               <Button type="submit" className={classes.button} variant="contained" color="primary">
                 {clinicById._id? 'Atualizar': 'Salvar'}
               </Button>
+              <Button className={classes.button} component={Link} to={`${match.url}/clinics?page=1`} variant="outline" color="primary">
+                Cancelar
+              </Button>
             </div>
           </Card>
         </form>
@@ -197,7 +194,6 @@ const ClinicSetup = (props) => {
     </div>
   )
 }
-
 
 ClinicSetup.prototypes = {
   clinicById: PropTypes.array.isRequired

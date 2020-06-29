@@ -180,6 +180,9 @@ const ManagerSetup = () => {
         <Button className={classes.button} variant="contained" color="primary">
           Editar
         </Button>
+        <Button className={classes.button} variant="outline" color="primary">
+          Cancelar
+        </Button>
       </Card>
     </div>
   );

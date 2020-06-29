@@ -45,7 +45,7 @@ export function list(page){
                 clinics: docs,
                 infos: infos,
             })
-        })
+        }, history.push(`/app/clinics?page=${page}`))
     }
 }
 

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { logout } from '../../store/authReducer';
 
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -28,6 +32,7 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import SettingsIcon from '@material-ui/icons/Settings';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import RoutesLevel1 from './RoutesApp';
 
@@ -69,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    textDecoration: 'none',
   },
   drawerPaper: {
     position: 'relative',
@@ -109,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
-  link: {
+  icon: {
     textDecoration: 'none',
     color: 'white',
   },
@@ -121,11 +127,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Sino = () => {
+const Menu = (props) => {
   const classes = useStyles();
   let match = useRouteMatch();
   
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -149,24 +155,27 @@ const Sino = () => {
               className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
               <MenuIcon />
             </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              <Link className={classes.link} to={`${match.url}/clinics`}>
+            <Typography component={Link} to={`${match.url}/clinics?page=1`} variant="h6" color="inherit" noWrap className={classes.title}>
                 Sino
-              </Link>
             </Typography>
               <div className={classes.profile}>Dr. Marcos Brito</div>
             <IconButton color="inherit">
               <Brightness4Icon/>
             </IconButton>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={2} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
             <IconButton color="inherit">
-              <Link className={classes.link} to={`${match.url}/clinics/menuSetup`}>
-                <SettingsIcon />
-              </Link>
+              <Button className={classes.icon} component={Link} to={`${match.url}/clinics/menuSetup`}>
+                <SettingsIcon/>
+              </Button>
+            </IconButton>
+            <IconButton color="inherit">
+              <Button className={classes.icon} onClick={props.logout}>
+                <ExitToAppIcon/>
+              </Button>
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -267,10 +276,10 @@ const Sino = () => {
   );
 };
 
-export default Sino;
-/*
+//export default Menu;
+
+
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({byId}, dispatch);
+  bindActionCreators({logout}, dispatch);
 
 export default connect(null, mapDispatchToProps)(Menu);
-*/

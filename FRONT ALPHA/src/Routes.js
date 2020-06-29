@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect, Router } from "react-router-dom";
 
-import Sino from "./pages/PagesWithAuth";
+import Menu from "./pages/PagesWithAuth";
 import history from './services/history';
 
 import { isAuthenticated } from "./services/auth";
@@ -27,7 +27,7 @@ const Routes = () => (
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/not-found" component={NotFound} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
-        <PrivateRoute path="/app" component={Sino}/>
+        <PrivateRoute path="/app" component={Menu}/>
         <Redirect to="/not-found" />
     </Switch>
   </Router>
