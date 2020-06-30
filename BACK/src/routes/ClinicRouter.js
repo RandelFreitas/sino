@@ -4,7 +4,7 @@ const ClinicController = require('../controllers/ClinicController');
 const PermissionManager = require('../middleware/PermissionManager');
 
 //create clinic
-routes.post("/clinics", ClinicController.create);
+routes.post("/clinics", PermissionManager.validateUser, ClinicController.create);
 
 //authenticate clinic
 routes.post("/clinics/authenticate", ClinicController.authenticate);
