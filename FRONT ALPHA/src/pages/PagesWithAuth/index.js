@@ -20,7 +20,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -167,15 +166,11 @@ const Menu = (props) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
-              <Button className={classes.icon} component={Link} to={`${match.url}/clinics/menuSetup`}>
-                <SettingsIcon/>
-              </Button>
+            <IconButton component={Link} to={`${match.url}/clinics/menuSetup`} color="inherit">
+              <SettingsIcon/>
             </IconButton>
-            <IconButton color="inherit">
-              <Button className={classes.icon} onClick={props.logout}>
-                <ExitToAppIcon/>
-              </Button>
+            <IconButton onClick={props.logout} color="inherit">
+              <ExitToAppIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
