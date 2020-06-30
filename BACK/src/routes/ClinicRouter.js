@@ -1,6 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 const ClinicController = require('../controllers/ClinicController');
+const PermissionManager = require('../middleware/PermissionManager');
 
 //create clinic
 routes.post("/clinics", ClinicController.create);
@@ -9,7 +10,7 @@ routes.post("/clinics", ClinicController.create);
 routes.post("/clinics/authenticate", ClinicController.authenticate);
 
 //upadate clinic by id
-routes.put("/clinics/:clinicId", ClinicController.updateById);
+routes.put("/clinics/:clinicId", PermissionManager.validateUser, ClinicController.updateById);
 
 //get all clinics
 routes.get("/clinics", ClinicController.getAll);

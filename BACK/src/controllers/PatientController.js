@@ -26,9 +26,9 @@ module.exports = {
     },
     async getAll(req, res){
         try {
-            req.query.page = parseInt(req.query.page);
-            req.query.limit = parseInt(req.query.limit);
-            const {page = 1, limit = 10} = req.query;
+            var {page = 1, limit = 10} = req.query; 
+            page = parseInt(page);
+            limit = parseInt(limit);
             const patients = await Patient().paginate({}, {page, limit, populate: 'address'});
             return res.json(patients); 
         } catch (err) {

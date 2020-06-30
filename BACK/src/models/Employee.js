@@ -15,6 +15,13 @@ const EmployeeSchema = new mongoose.Schema({
   phone: {
     type: String
   },
+  dtBirth: {
+    type: String,
+    required: true,
+  },
+  sex: {
+    type: String,
+  },
   registro: {
     type: String
   },
@@ -22,6 +29,9 @@ const EmployeeSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  obs: {
+    type: String,
   },
   address: {
     type: mongoose.Schema.Types.ObjectId,
