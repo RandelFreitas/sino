@@ -2,6 +2,7 @@ const mongoose = require("../database/Connect");
 const mongoosePaginate = require("mongoose-paginate");
 const { tenantModel } = require("../middleware/MultiTenant");
 const Address = require('./Address');
+const Permission = require('./Permission');
 
 const EmployeeSchema = new mongoose.Schema({
   name: {
@@ -36,6 +37,10 @@ const EmployeeSchema = new mongoose.Schema({
   address: {
     type: mongoose.Schema.Types.ObjectId,
     ref: Address,
+  },
+  permission: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Permission,
   },
 });
 
