@@ -183,7 +183,7 @@ const ClinicSetup = (props) => {
               <Button type="submit" className={classes.button} variant="contained" color="primary">
                 {clinicById._id? 'Atualizar': 'Salvar'}
               </Button>
-              <Button className={classes.button} component={Link} to={`${match.url}/clinics?page=1`} variant="outline" color="primary">
+              <Button className={classes.button} variant="outlined" color="primary">
                 Cancelar
               </Button>
             </div>

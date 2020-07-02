@@ -15,10 +15,13 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import CardActions from '@material-ui/core/CardActions';
 import Pagination from '@material-ui/lab/Pagination';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { list } from '../../../../store/clinicReducer';
 import { AlertDialog } from '../../../../components/';
-
 
 const useStyles = makeStyles((theme) =>({
   root: {
@@ -32,17 +35,12 @@ const useStyles = makeStyles((theme) =>({
   media: {
     height: 140,
   },
-  button: {
-    justifyContent: 'center'
+  center: {
+    justifyContent: 'center',
   },
-  pagination: {
-    margin: 20,
-    justifyContent: 'center'
+  clinics: {
+    justifyContent: 'space-between'
   },
-  dialog: {
-    margin: (0, 8),
-  }
-
 }));
 
 const ClinicList = (props) => {
@@ -51,22 +49,27 @@ const ClinicList = (props) => {
   
   const { clinics, infos } = props;
   const nOfPages = infos.pages;
-  const [page, setPage] = useState(window.location.href.split('page=')[1]);
+  const [page, setPage] = useState(1);
+  const [nOfItems, setNoOfItems] = useState(9);
 
   useEffect(() => {
-    props.list(page);
-  },[page]);
+    props.list(page, nOfItems);
+  },[page, nOfItems]);
   
   const handleChange=(event, value)=>{
     setPage(value);
+  }
+  const handleNofItems=(event)=>{
+    setNoOfItems(event.target.value);
+    setPage(1);
   }
 
   const mapClinic = (
     <React.Fragment>
       {clinics.map( clinic => {
           return(
-            <Grid item md={4} sm={6} xs={12}>
-              <div key={clinic._id} className={classes.item}>  
+            <Grid key={clinic._id} item md={4} sm={6} xs={12}>
+              <div className={classes.item}>  
                 <Card>
                   <CardActionArea>
                     <CardMedia className={classes.media} image="/static/img/clinica01.png"/>
@@ -79,7 +82,7 @@ const ClinicList = (props) => {
                       </Typography>
                     </CardContent>
                   </CardActionArea>
-                  <CardActions className={classes.button}>
+                  <CardActions className={classes.center}>
                     <Button component={Link} to={`${match.url}/clinic/?${clinic._id}`} variant="contained" color="primary">
                       Gerenciar
                     </Button>
@@ -97,11 +100,24 @@ const ClinicList = (props) => {
 
   return(
     <div className={classes.root}>
-      <Grid container spacing={1}>
-        <Grid className={classes.dialog} container item xs={12} spacing={3}>
+      <Grid className={classes.center} container spacing={1}>
+        <Grid className={classes.clinics} container item xs={12} >
           <AlertDialog />
+          <div>
+            <FormControl>
+              <FormHelperText>Número por página:</FormHelperText>
+              <Select
+                value={nOfItems}
+                onChange={handleNofItems}
+                inputProps={{ 'aria-label': 'Without label' }}>
+                <MenuItem value={9}>9</MenuItem>
+                <MenuItem value={18}>18</MenuItem>
+                <MenuItem value={27}>27</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
         </Grid>
-        <Grid container item className={classes.pagination} xs={12} spacing={3}>
+        <Grid container item className={classes.center} xs={12} spacing={3}>
           <Box component="span">
             <Pagination
               count={nOfPages}
@@ -113,7 +129,7 @@ const ClinicList = (props) => {
         <Grid container item xs={12} spacing={3}>
           {mapClinic}
         </Grid>
-        <Grid className={classes.pagination} container item xs={12} spacing={3}>
+        <Grid className={classes.center} container item xs={12} spacing={3}>
           <Box component="span">
             <Pagination
               count={nOfPages}

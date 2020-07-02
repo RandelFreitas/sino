@@ -35,9 +35,9 @@ export const clinicReducer = (state = ESTADO_INICIAL, action) => {
     }
 }
 
-export function list(page){
+export function list(page, nOfItems){
     return dispatch => {
-        api.get(`/level1/clinics?page=${page}`)
+        api.get(`/level1/clinics?page=${page}&limit=${nOfItems}`)
         .then(Response => {
             const { docs, ...infos } = Response.data;
             dispatch({
@@ -45,7 +45,7 @@ export function list(page){
                 clinics: docs,
                 infos: infos,
             })
-        }, history.push(`/app/clinics?page=${page}`))
+        }, history.push(`/app/clinics?page=${page}&limit=${nOfItems}`))
     }
 }
 
