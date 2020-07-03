@@ -70,7 +70,7 @@ export function addClinic(clinic){
                 type: ACTIONS.ADD,
                 clinic: Response.data
             })
-        }, history.push('/app'))
+        }, history.push('/app/clinics?page=1&limit=9'))
     }
 }
 
@@ -82,7 +82,7 @@ export function updateClinic(clinic, id){
                 type: ACTIONS.UPDATE,
                 //clinic: Response.data
             })
-        }, history.push('/app'))
+        }, history.push('/app/clinics?page=1&limit=9'))
     }
 }
 

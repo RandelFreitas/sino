@@ -3,53 +3,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
-
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import { Divider, 
   Button,
+  TextField,
   Card,
   CardActionArea,
   CardActions,
   CardMedia,
-  Typography } from '@material-ui/core';
+  Typography, 
+  Grid} from '@material-ui/core';
 import { addClinic, getClinicById, updateClinic, cleanClinic } from '../../../../store/clinicReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginBottom: 8
-  },
-  middle: {
-    width: '46%',
-    margin: 8,
-  },
-  zip: {
-    width: '26%',
-    margin: 8,
-  },
-  street: {
-    width: '66%',
-    margin: 8,
-  },
-  district: {
-    width: '26%',
-    margin: 8,
-  },
-  city: {
-    width: '21%',
-    margin: 8,
-  },
-  state: {
-    width: '21%',
-    margin: 8,
-  },
-  number: {
-    width: '20%',
-    margin: 8,
   },
   button: {
     float: 'right',
@@ -66,13 +38,13 @@ const useStyles = makeStyles((theme) => ({
   center: {
     margin: 'auto',
   },
-  mask: {
-    margin: 8,
-    borderWidth: 1,
-    height: 30,
-    borderRadius: 4,
-    borderColor: '#bcbcbc',
-    textContent: 'auto'
+  error: {
+    color: 'red',
+    fontSize: 12
+  },
+  grid: {
+    justifyContent: 'center',
+    padding: 8
   }
 }));
 
@@ -124,17 +96,31 @@ const ClinicSetup = (props) => {
         </CardActions>
       </Card>
       <Divider/>
-
       <Formik 
         initialValues= {clinicById._id? clinicById : defaultFormShape}
         enableReinitialize
-
         validationSchema={Yup.object({
           name: Yup.string()
             .required('Nome obrigatório!'),
+          email: Yup.string()
+            .required('Email obrigatório!'),
+          phone: Yup.string()
+            .required('Telefone obrigatório!'),
+          cnpj: Yup.string()
+            .required('Cnpj obrigatório!'),
           address: Yup.object({
             zip: Yup.string()
               .required('Cep obrigatorio!'),
+            street: Yup.string()
+              .required('Rua obrigatorio!'),
+            district: Yup.string()
+              .required('Bairro obrigatorio!'),
+            city: Yup.string()
+              .required('Cidade obrigatorio!'),
+            state: Yup.string()
+              .required('Estado obrigatorio!'),
+            number: Yup.string()
+              .required('Número obrigatorio!'),
           }),
         })}
 
@@ -148,47 +134,189 @@ const ClinicSetup = (props) => {
           }else{
             props.addClinic(values);
           }
-        }} 
-      >
+        }}>
         {formik => (
-          <form onSubmit={formik.handleSubmit}>
-          <Card className={classes.card}>
-            <p style={{margin: 10}}>Dados</p>
-            <div className={classes.data}>
-              <TextField className={classes.middle}
-                variant="outlined"
-                label="Nome:"
-                name="name"
-                InputLabelProps={{ shrink: true }}
-                {...formik.getFieldProps('name')}
-              />
-              <div>
-                {formik.touched.name && formik.errors.name ? (
-                  <Typography className={classes.error}>{formik.errors.name}</Typography>
-                ) : null}
-              </div>
-              <TextField className={classes.middle}
-                variant="outlined"
-                label="Cep:"
-                name="address.zip"
-                InputLabelProps={{ shrink: true }}
-                {...formik.getFieldProps('address.zip')}
-              />
-              <div>
-                {formik.touched.address && formik.errors.address ? (
-                  <Typography className={classes.error}>{formik.errors.address.zip}</Typography>
-                ) : null}
-              </div>
-              <Divider/>
-              <Button type="submit" className={classes.button} variant="contained" color="primary">
-                {clinicById._id? 'Atualizar': 'Salvar'}
-              </Button>
-              <Button className={classes.button} variant="outlined" color="primary">
-                Cancelar
-              </Button>
-            </div>
+          <Card >
+            <form onSubmit={formik.handleSubmit}>
+              <p style={{margin: 10}}>Dados</p>
+              <Grid container>
+                <Grid container item spacing={1} className={classes.grid}>
+                  <Grid item xs={4}>
+                    <TextField
+                      variant="outlined"
+                      label="Nome:"
+                      margin="dense"
+                      fullWidth
+                      name="name"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('name')}
+                    />
+                    <div>
+                      {formik.touched.name && formik.errors.name ? (
+                        <Typography className={classes.error}>{formik.errors.name}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                      variant="outlined"
+                      label="Email:"
+                      margin="dense"
+                      fullWidth
+                      name="email"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('email')}
+                    />
+                    <div>
+                      {formik.touched.email && formik.errors.email ? (
+                        <Typography className={classes.error}>{formik.errors.email}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      label="Telefone:"
+                      margin="dense"
+                      fullWidth
+                      name="phone"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('phone')}
+                    />
+                    <div>
+                      {formik.touched.phone && formik.errors.phone ? (
+                        <Typography className={classes.error}>{formik.errors.phone}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      label="CNPJ:"
+                      margin="dense"
+                      fullWidth
+                      name="cnpj"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('cnpj')}
+                    />
+                    <div>
+                      {formik.touched.cnpj && formik.errors.cnpj ? (
+                        <Typography className={classes.error}>{formik.errors.cnpj}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                </Grid>
+                <p style={{margin: 10}}>Endereço</p>
+                <Grid container item spacing={1} className={classes.grid}>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      label="Cep:"
+                      margin="dense"
+                      fullWidth
+                      name="address.zip"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('address.zip')}
+                    />
+                    <div>
+                      {formik.touched.address && formik.errors.address ? (
+                        <Typography className={classes.error}>{formik.errors.address.zip}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                      variant="outlined"
+                      label="Rua:"
+                      margin="dense"
+                      fullWidth
+                      name="address.street"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('address.street')}
+                    />
+                    <div>
+                      {formik.touched.address && formik.errors.address ? (
+                        <Typography className={classes.error}>{formik.errors.address.street}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      label="Bairro:"
+                      margin="dense"
+                      fullWidth
+                      name="address.district"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('address.district')}
+                    />
+                    <div>
+                      {formik.touched.address && formik.errors.address ? (
+                        <Typography className={classes.error}>{formik.errors.address.district}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      label="Cidade:"
+                      margin="dense"
+                      fullWidth
+                      name="address.city"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('address.city')}
+                    />
+                    <div>
+                      {formik.touched.address && formik.errors.address ? (
+                        <Typography className={classes.error}>{formik.errors.address.city}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <TextField
+                      variant="outlined"
+                      label="Estado:"
+                      margin="dense"
+                      fullWidth
+                      name="address.state"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('address.state')}
+                    />
+                    <div>
+                      {formik.touched.address && formik.errors.address ? (
+                        <Typography className={classes.error}>{formik.errors.address.state}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <TextField
+                      variant="outlined"
+                      label="Número:"
+                      margin="dense"
+                      fullWidth
+                      name="address.number"
+                      InputLabelProps={{ shrink: true }}
+                      {...formik.getFieldProps('address.number')}
+                    />
+                    <div>
+                      {formik.touched.address && formik.errors.address ? (
+                        <Typography className={classes.error}>{formik.errors.address.number}</Typography>
+                      ) : null}
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider/>
+                  <Button type="submit" className={classes.button} variant="contained" color="primary">
+                    {clinicById._id? 'Atualizar': 'Salvar'}
+                  </Button>
+                  <Button className={classes.button} variant="outlined" color="primary">
+                    Cancelar
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
           </Card>
-        </form>
         )}
       </Formik>
     </div>

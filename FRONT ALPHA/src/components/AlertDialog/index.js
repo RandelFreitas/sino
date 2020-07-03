@@ -6,7 +6,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Card from '@material-ui/core/Card';
 
 const useStyles = {
   textDecoration: 'none',
@@ -31,8 +30,7 @@ const AlertDialog = () => {
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+        aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">{"Criar nova clínica"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

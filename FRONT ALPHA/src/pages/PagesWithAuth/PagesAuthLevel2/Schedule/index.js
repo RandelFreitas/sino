@@ -29,5 +29,4 @@ const Schedule = (props) => {
     )
 }
 
-
 export default Schedule;

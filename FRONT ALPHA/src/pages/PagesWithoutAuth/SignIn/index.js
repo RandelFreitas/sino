@@ -103,7 +103,7 @@ const SignIn = (props) => {
               onBlur={formik.handleBlur}
               value={formik.values.password} 
             />
-            <div className={classes.error}>
+            <div>
               {formik.touched.password && formik.errors.password ? (
                 <Typography className={classes.error}>{formik.errors.password}</Typography>
               ) : null}
