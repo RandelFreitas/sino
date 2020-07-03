@@ -15,6 +15,10 @@ module.exports = {
                 return res.status(400).send({error: 'CPF invalid: '+cpf})
             }
 
+            if(await User({skipTenant: true}).findOne({email})){
+                return res.status(400).send({error: 'User already exists: '+email})
+            }
+
             const manager = await Manager().create({name, email, cpf, phone});
             
             setCurrentTenantId(manager._id);
@@ -23,10 +27,6 @@ module.exports = {
             await managerAddress.save();
             manager.address = managerAddress;
             await manager.save();
-            
-            if(await User({skipTenant: true}).findOne({email})){
-                return res.status(400).send({error: 'User already exists: '+email})
-            }
 
             const user = await User().create({email, password, userType: 'Manager', parentId: manager._id});
 

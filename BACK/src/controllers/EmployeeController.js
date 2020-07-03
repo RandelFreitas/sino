@@ -2,16 +2,21 @@ const mongoose = require("../database/Connect");
 const Employee = require('../models/Employee');
 const User = require('../models/User');
 const Address = require('../models/Address');
+const Permission = require('../models/Permission');
 const validator = require('cpf-cnpj-validator');
 const { setCurrentTenantId } = require("../middleware/Storage");
 
 module.exports = {
     async create(req, res){
         try{
-            const {name, email, cpf, phone, registro, dtBirth, sex, obs, address, password} = req.body; 
+            const {name, email, cpf, phone, registro, dtBirth, sex, obs, address, password, permission} = req.body; 
             
             if(!validator.cpf.isValid(cpf)){
                 return res.status(400).send({error: 'CPF invalid: '+cpf})
+            }
+
+            if(await User().findOne({email})){
+                return res.status(400).send({error: 'User already exists: '+email})
             }
 
             const employee = await Employee().create({name, email, cpf, phone, registro, dtBirth, sex, obs});
@@ -19,11 +24,12 @@ module.exports = {
             const employeeAddress = Address()({...address, parentId: employee._id});
             await employeeAddress.save();
             employee.address = employeeAddress;
-            await employee.save();
+
+            const employeePermission = Permission()({...permission, parentId: employee._id});
+            await employeePermission.save();
+            employee.permission = employeePermission;
             
-            if(await User().findOne({email})){
-                return res.status(400).send({error: 'User already exists: '+email})
-            }
+            await employee.save();
 
             const user = await User().create({email, password, userType: 'Employee', parentId: employee._id});
 
@@ -37,7 +43,7 @@ module.exports = {
             var {page = 1, limit = 10} = req.query; 
             page = parseInt(page);
             limit = parseInt(limit);
-            const employees = await Employee().paginate({}, {page, limit, populate: 'address'});
+            const employees = await Employee().paginate({}, {page, limit, populate: ('address')});
             return res.json(employees); 
         } catch (err) {
             return res.status(400).send({error: 'Error loading all employees: '+err});
@@ -54,7 +60,7 @@ module.exports = {
     },
     async updateById(req, res){
         try{
-            const {name, email, cpf, phone, registro, dtBirth, sex, obs, address} = req.body; 
+            const {name, email, cpf, phone, registro, dtBirth, sex, obs, address, permission} = req.body; 
 
             if(!validator.cpf.isValid(cpf)){
                 return res.status(400).send({error: 'CPF invalid: '+cpf})
@@ -70,6 +76,13 @@ module.exports = {
             const employeeAddress = Address()({...address, parentId: employee._id});
             await employeeAddress.save();
             employee.address = employeeAddress;
+
+            employee.permission = [];
+            await Permission().deleteOne({parentId: employee._id});
+            const employeePermission = Permission()({...permission, parentId: employee._id});
+            await employeePermission.save();
+            employee.permission = employeePermission;
+            
             await employee.save();
 
             return res.json(await Employee().findOne({_id: req.params.employeeId}).populate('address'));
